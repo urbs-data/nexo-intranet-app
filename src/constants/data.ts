@@ -28,22 +28,12 @@ export const navItems: NavItem[] = [
         url: '/dashboard/customers',
         icon: 'userPen',
         shortcut: ['c', 'c']
-      }
-    ]
-  },
-
-  {
-    title: 'Account',
-    url: '#', // Placeholder as there is no direct link for the parent
-    icon: 'billing',
-    isActive: true,
-
-    items: [
+      },
       {
-        title: 'Profile',
-        url: '/dashboard/profile',
+        title: 'Proveedores',
+        url: '/dashboard/providers',
         icon: 'userPen',
-        shortcut: ['m', 'm']
+        shortcut: ['c', 'p']
       }
     ]
   }

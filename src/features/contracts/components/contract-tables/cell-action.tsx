@@ -35,7 +35,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
                 variant='ghost'
                 size='icon'
                 className='h-8 w-8'
-                onClick={() => router.push(`/dashboard/contract/${data.id}`)}
+                onClick={() => router.push(`/dashboard/contracts/${data.id}`)}
               >
                 <IconEye className='h-4 w-4' />
                 <span className='sr-only'>Ver</span>

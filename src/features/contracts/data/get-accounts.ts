@@ -2,7 +2,7 @@
 
 import db from '@/db';
 import { accountTable } from '@/db/schema';
-import { like, and, eq } from 'drizzle-orm';
+import { like, and, eq, sql } from 'drizzle-orm';
 import { AccountType } from '@/db/enums';
 
 export interface AccountOption {
@@ -14,10 +14,15 @@ export async function getCustomerAccounts(
   search?: string,
   currency?: string
 ): Promise<AccountOption[]> {
-  const conditions = [eq(accountTable.account_type, AccountType.CUSTOMER)];
+  const conditions = [
+    eq(accountTable.account_type, AccountType.CUSTOMER),
+    eq(accountTable.is_active, true)
+  ];
 
   if (search) {
-    conditions.push(like(accountTable.name, `%${search}%`));
+    conditions.push(
+      like(sql`lower(${accountTable.name})`, `%${search.toLowerCase()}%`)
+    );
   }
 
   if (currency) {
@@ -43,10 +48,15 @@ export async function getProviderAccounts(
   search?: string,
   currency?: string
 ): Promise<AccountOption[]> {
-  const conditions = [eq(accountTable.account_type, AccountType.PROVIDER)];
+  const conditions = [
+    eq(accountTable.account_type, AccountType.PROVIDER),
+    eq(accountTable.is_active, true)
+  ];
 
   if (search) {
-    conditions.push(like(accountTable.name, `%${search}%`));
+    conditions.push(
+      like(sql`lower(${accountTable.name})`, `%${search.toLowerCase()}%`)
+    );
   }
 
   if (currency) {

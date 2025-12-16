@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { customerSearchParams } from '@/features/customers/searchparams';
+import { providerSearchParams } from '@/features/providers/searchparams';
 import { useDebouncedQueryState } from '@/hooks/use-debounced-query-state';
 import { useQueryState } from 'nuqs';
 import { useTransitionContext } from '@/hooks/use-transition-context';
@@ -13,7 +13,7 @@ import { getCountries } from '@/features/shared/data/get-countries';
 import { useQuery } from '@tanstack/react-query';
 import { FilterSelect } from '@/components/ui/filter-select';
 
-export function CustomerFilters() {
+export function ProviderFilters() {
   const { startTransition } = useTransitionContext();
 
   const { data: countries = [], isLoading: isLoadingCountries } = useQuery({
@@ -23,7 +23,7 @@ export function CustomerFilters() {
 
   const [search, setSearch] = useDebouncedQueryState(
     'search',
-    customerSearchParams.search,
+    providerSearchParams.search,
     {
       startTransition,
       shallow: false,
@@ -33,7 +33,7 @@ export function CustomerFilters() {
 
   const [isActive, setIsActive] = useQueryState(
     'isActive',
-    customerSearchParams.isActive?.withOptions({
+    providerSearchParams.isActive?.withOptions({
       startTransition,
       shallow: false
     })
@@ -41,7 +41,7 @@ export function CustomerFilters() {
 
   const [countryId, setCountryId] = useQueryState(
     'countryId',
-    customerSearchParams.countryId?.withOptions({
+    providerSearchParams.countryId?.withOptions({
       startTransition,
       shallow: false
     })
@@ -49,7 +49,7 @@ export function CustomerFilters() {
 
   const [page, setPage] = useQueryState(
     'page',
-    customerSearchParams.page.withOptions({
+    providerSearchParams.page.withOptions({
       startTransition,
       shallow: false
     })

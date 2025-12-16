@@ -1,0 +1,9 @@
+--------------------------------
+CLIENTES
+- mejorar visualmente la UI de agregar - modificar cliente
+- agregar tab de contratos
+- agregar tab de contactos
+- emitir un evento cuando se crea - actualiza cliente 
+
+--------------------------------
+PROVEEDORES

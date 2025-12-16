@@ -25,7 +25,7 @@ export function DataTableSkeleton({
   rowCount = 10,
   filterCount = 0,
   cellWidths = ['auto'],
-  withViewOptions = true,
+  withViewOptions = false,
   withTableActions = false,
   withPagination = true,
   shrinkZero = false,

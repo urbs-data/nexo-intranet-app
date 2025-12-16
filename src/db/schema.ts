@@ -68,6 +68,7 @@ export const accountTable = pgTable('account', {
   minimum_balance: real('minimum_balance'), // limite de saldo
   can_book_with_balance: boolean('can_book_with_balance').default(false), // puede tomar reservas en gastos con saldo disponible
   can_book_with_overdraft: boolean('can_book_with_overdraft').default(false), // puede tomar reservas en gastos con descubierto disponible
+  support_contact_info: text('support_contact_info'), // información de contacto para soporte a clientes (texto rico)
   created_at: timestamp('created_at').notNull().defaultNow(),
   updated_at: timestamp('updated_at').notNull().defaultNow()
 });

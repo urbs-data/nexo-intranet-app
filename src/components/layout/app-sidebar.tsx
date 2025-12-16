@@ -48,8 +48,7 @@ import { Icons } from '../icons';
 import { OrgSwitcher } from '../org-switcher';
 export const company = {
   name: 'Nexo',
-  logo: '/logo-sm_us.svg',
-  plan: 'Enterprise'
+  logo: '/logo-sm_us.svg'
 };
 
 const tenants = [
