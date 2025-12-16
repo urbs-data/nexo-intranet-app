@@ -25,6 +25,7 @@ interface FormSelectProps<
   options: FormOption[];
   placeholder?: string;
   searchable?: boolean;
+  isLoading?: boolean;
 }
 
 function FormSelect<
@@ -39,7 +40,8 @@ function FormSelect<
   options,
   placeholder = 'Select an option',
   disabled,
-  className
+  className,
+  isLoading
 }: FormSelectProps<TFieldValues, TName>) {
   return (
     <FormField

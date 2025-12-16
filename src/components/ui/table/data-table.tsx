@@ -16,18 +16,20 @@ interface DataTableProps<TData> extends React.ComponentProps<'div'> {
   table: TanstackTable<TData>;
   totalItems?: number;
   tableActions?: React.ReactNode;
+  showViewOptions?: boolean;
 }
 
 export function DataTable<TData>({
   table,
   totalItems,
-  tableActions
+  tableActions,
+  showViewOptions = true
 }: DataTableProps<TData>) {
   return (
     <div className='relative flex flex-1 flex-col space-y-4'>
       <div className='absolute -top-[3rem] right-0 z-10 flex items-center gap-2'>
         {tableActions}
-        <DataTableViewOptions table={table} />
+        {showViewOptions && <DataTableViewOptions table={table} />}
       </div>
       <div className='relative flex flex-1'>
         <div className='absolute inset-0 overflow-x-auto overflow-y-auto rounded-lg border'>

@@ -20,7 +20,7 @@ export async function getProducts(input: GetProductsSchema): Promise<{
 
   const parsedInput = result.data;
   const page = parsedInput.page || 1;
-  const limit = parsedInput.limit || 10;
+  const limit = parsedInput.limit || 50;
   const offset = (page - 1) * limit;
 
   const conditions = [];

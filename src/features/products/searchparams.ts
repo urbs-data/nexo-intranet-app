@@ -8,7 +8,7 @@ import {
 
 export const productSearchParams = {
   page: parseAsInteger.withDefault(1),
-  perPage: parseAsInteger.withDefault(10),
+  perPage: parseAsInteger.withDefault(50),
   name: parseAsString,
   category: parseAsString,
   area: parseAsString,

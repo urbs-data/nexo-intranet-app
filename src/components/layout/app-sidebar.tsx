@@ -38,7 +38,6 @@ import {
   IconChevronsDown,
   IconCreditCard,
   IconLogout,
-  IconPhotoUp,
   IconUserCircle
 } from '@tabler/icons-react';
 import { useClerk } from '@clerk/nextjs';
@@ -48,8 +47,8 @@ import * as React from 'react';
 import { Icons } from '../icons';
 import { OrgSwitcher } from '../org-switcher';
 export const company = {
-  name: 'Acme Inc',
-  logo: IconPhotoUp,
+  name: 'Nexo',
+  logo: '/logo-sm_us.svg',
   plan: 'Enterprise'
 };
 
