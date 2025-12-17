@@ -7,6 +7,8 @@ import { accountContractTable } from '@/db/schema';
 import { revalidatePath } from 'next/cache';
 import { eq, and, sql } from 'drizzle-orm';
 import { ValidationError } from '@/lib/errors';
+import { publishMessage } from '@/messaging/client';
+import { EVENTS } from '@/messaging/events';
 
 export const mapContract = authActionClient
   .metadata({ actionName: 'mapContract' })
@@ -43,6 +45,8 @@ export const mapContract = authActionClient
       .set(updateData)
       .where(eq(accountContractTable.id, contractId));
 
+    const modifiedContracts = [contractId];
+
     if (mapSameName) {
       if (customerInternalId !== undefined && contract.cto_marketer_name) {
         const conditions = [
@@ -53,12 +57,15 @@ export const mapContract = authActionClient
           sql`${accountContractTable.id}::text != ${contractId}`
         ];
 
-        await db
+        const result = await db
           .update(accountContractTable)
           .set({
             account_customer_id: customerInternalId || null
           })
-          .where(and(...conditions));
+          .where(and(...conditions))
+          .returning({ id: accountContractTable.id });
+
+        modifiedContracts.push(...result.map((r) => r.id));
       }
       if (providerInternalId !== undefined && contract.cto_provider_name) {
         const conditions = [
@@ -68,14 +75,18 @@ export const mapContract = authActionClient
           ),
           sql`${accountContractTable.id}::text != ${contractId}`
         ];
-        await db
+        const result = await db
           .update(accountContractTable)
           .set({
             account_provider_id: providerInternalId || null
           })
-          .where(and(...conditions));
+          .where(and(...conditions))
+          .returning({ id: accountContractTable.id });
+        modifiedContracts.push(...result.map((r) => r.id));
       }
     }
+
+    await publishMessage(EVENTS.CONTRACTS_MAPPED, { ids: modifiedContracts });
 
     revalidatePath('/dashboard/contracts');
     return { message: 'Contrato mapeado exitosamente' };

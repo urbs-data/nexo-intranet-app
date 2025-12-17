@@ -10,11 +10,15 @@ const topicsConfig: Record<string, { subscription: string; endpoint: string }> =
   {
     [EVENTS.CUSTOMER_UPSERTED]: {
       subscription: 'customer-upserted-sub',
-      endpoint: '/accounts/events/customers/upserted'
+      endpoint: '/events/accounts/customers/upserted'
     },
     [EVENTS.PROVIDER_UPSERTED]: {
       subscription: 'provider-upserted-sub',
-      endpoint: '/accounts/events/providers/upserted'
+      endpoint: '/events/accounts/providers/upserted'
+    },
+    [EVENTS.CONTRACTS_MAPPED]: {
+      subscription: 'contracts-mapped-sub',
+      endpoint: '/events/contracts/mapped'
     }
   };
 

@@ -25,6 +25,7 @@ export const actionClient = createSafeActionClient({
     ) {
       return e.message;
     } else if (process.env.NODE_ENV == 'development') {
+      console.log(e);
       return e.name + ' -- ' + e.message;
     }
 
