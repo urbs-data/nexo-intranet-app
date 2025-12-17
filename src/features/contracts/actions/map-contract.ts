@@ -15,7 +15,6 @@ export const mapContract = authActionClient
     const { contractId, customerInternalId, providerInternalId, mapSameName } =
       parsedInput;
 
-    // Obtener el contrato actual
     const [contract] = await db
       .select()
       .from(accountContractTable)
@@ -39,56 +38,45 @@ export const mapContract = authActionClient
       updateData.account_provider_id = providerInternalId || null;
     }
 
-    // Actualizar el contrato actual
     await db
       .update(accountContractTable)
       .set(updateData)
       .where(eq(accountContractTable.id, contractId));
 
-    // Si mapSameName es true, actualizar otros contratos con el mismo nombre
     if (mapSameName) {
-      const conditions = [];
-
       if (customerInternalId !== undefined && contract.cto_marketer_name) {
-        conditions.push(
-          eq(accountContractTable.cto_marketer_name, contract.cto_marketer_name)
-        );
-      }
-
-      if (providerInternalId !== undefined && contract.cto_provider_name) {
-        conditions.push(
-          eq(accountContractTable.cto_provider_name, contract.cto_provider_name)
-        );
-      }
-
-      if (conditions.length > 0) {
-        const whereConditions = [
-          ...conditions,
-          // No actualizar el contrato actual
+        const conditions = [
+          eq(
+            accountContractTable.cto_marketer_name,
+            contract.cto_marketer_name
+          ),
           sql`${accountContractTable.id}::text != ${contractId}`
         ];
 
-        const bulkUpdateData: {
-          account_customer_id?: string | null;
-          account_provider_id?: string | null;
-        } = {};
-
-        // Solo actualizar los campos que se están mapeando
-        if (customerInternalId !== undefined) {
-          bulkUpdateData.account_customer_id = customerInternalId || null;
-        }
-
-        if (providerInternalId !== undefined) {
-          bulkUpdateData.account_provider_id = providerInternalId || null;
-        }
-
         await db
           .update(accountContractTable)
-          .set(bulkUpdateData)
-          .where(and(...whereConditions));
+          .set({
+            account_customer_id: customerInternalId || null
+          })
+          .where(and(...conditions));
+      }
+      if (providerInternalId !== undefined && contract.cto_provider_name) {
+        const conditions = [
+          eq(
+            accountContractTable.cto_provider_name,
+            contract.cto_provider_name
+          ),
+          sql`${accountContractTable.id}::text != ${contractId}`
+        ];
+        await db
+          .update(accountContractTable)
+          .set({
+            account_provider_id: providerInternalId || null
+          })
+          .where(and(...conditions));
       }
     }
 
-    revalidatePath('/dashboard/contract');
+    revalidatePath('/dashboard/contracts');
     return { message: 'Contrato mapeado exitosamente' };
   });
