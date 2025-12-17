@@ -6,6 +6,8 @@ import db from '@/db';
 import { accountTable } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
+import { EVENTS } from '@/messaging/events';
+import { publishMessage } from '@/messaging/client';
 
 export const updateCustomer = authActionClient
   .metadata({ actionName: 'updateCustomer' })
@@ -35,10 +37,13 @@ export const updateCustomer = authActionClient
       updated_at: now
     };
 
-    await db
+    const [account] = await db
       .update(accountTable)
       .set(updateData)
-      .where(eq(accountTable.id, parsedInput.id));
+      .where(eq(accountTable.id, parsedInput.id))
+      .returning();
+
+    await publishMessage(EVENTS.CUSTOMER_UPSERTED, { account_id: account.id });
 
     revalidatePath('/dashboard/customers');
     revalidatePath(`/dashboard/customers/${parsedInput.id}`);

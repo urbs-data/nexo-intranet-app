@@ -8,8 +8,7 @@ export const PAYMENT_RULES = Object.values(PaymentRule).map((value) => ({
 export const CURRENCIES = [
   { value: 'USD', label: 'USD' },
   { value: 'EUR', label: 'EUR' },
-  { value: 'ARS', label: 'ARS' },
-  { value: 'BRL', label: 'BRL' }
+  { value: 'ARS', label: 'ARS' }
 ];
 
 export const LANGUAGES = [

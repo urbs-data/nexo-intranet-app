@@ -33,25 +33,18 @@ export const columns: ColumnDef<CustomerWithCountry>[] = [
     )
   },
   {
-    id: 'is_active',
-    accessorKey: 'is_active',
+    id: 'currency',
+    accessorKey: 'currency',
     header: ({ column }: { column: Column<CustomerWithCountry, unknown> }) => (
-      <DataTableColumnHeader column={column} title='Estado' />
+      <DataTableColumnHeader column={column} title='Moneda' />
     ),
-    cell: ({ cell }) => {
-      const isActive = cell.getValue<CustomerWithCountry['is_active']>();
-      const Icon = isActive ? CheckCircle2 : XCircle;
-      return (
-        <Badge
-          variant={isActive ? 'default' : 'secondary'}
-          className='capitalize'
-        >
-          <Icon className='mr-1 h-3 w-3' />
-          {isActive ? 'Activo' : 'Inactivo'}
-        </Badge>
-      );
-    }
+    cell: ({ cell }) => (
+      <div className='font-medium'>
+        {cell.getValue<CustomerWithCountry['currency']>()}
+      </div>
+    )
   },
+
   {
     id: 'country_name',
     accessorKey: 'country_name',
@@ -87,6 +80,26 @@ export const columns: ColumnDef<CustomerWithCountry>[] = [
     cell: ({ cell }) => {
       const value = cell.getValue<CustomerWithCountry['payment_rule_id']>();
       return <div className='text-sm'>{value}</div>;
+    }
+  },
+  {
+    id: 'is_active',
+    accessorKey: 'is_active',
+    header: ({ column }: { column: Column<CustomerWithCountry, unknown> }) => (
+      <DataTableColumnHeader column={column} title='Estado' />
+    ),
+    cell: ({ cell }) => {
+      const isActive = cell.getValue<CustomerWithCountry['is_active']>();
+      const Icon = isActive ? CheckCircle2 : XCircle;
+      return (
+        <Badge
+          variant={isActive ? 'default' : 'secondary'}
+          className='capitalize'
+        >
+          <Icon className='mr-1 h-3 w-3' />
+          {isActive ? 'Activo' : 'Inactivo'}
+        </Badge>
+      );
     }
   },
   {

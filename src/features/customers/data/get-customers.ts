@@ -102,7 +102,8 @@ export async function getCustomers(input: GetCustomersSchema): Promise<{
       quickbooks_id: accountTable.quickbooks_id,
       created_at: accountTable.created_at,
       updated_at: accountTable.updated_at,
-      country_name: countryTable.name_es
+      country_name: countryTable.name_es,
+      currency: accountTable.currency
     })
     .from(accountTable)
     .leftJoin(countryTable, eq(accountTable.country_id, countryTable.id))

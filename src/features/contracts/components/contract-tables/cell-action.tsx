@@ -2,8 +2,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { ContractWithAccounts } from '../../data/get-contracts';
-import { IconEye, IconEdit } from '@tabler/icons-react';
-import { useRouter } from 'next/navigation';
+import { IconEdit } from '@tabler/icons-react';
 import {
   Tooltip,
   TooltipContent,
@@ -17,7 +16,6 @@ interface CellActionProps {
 }
 
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
-  const router = useRouter();
   const [isMapModalOpen, setIsMapModalOpen] = useState(false);
 
   return (
@@ -29,23 +27,6 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
       />
       <TooltipProvider>
         <div className='flex items-center gap-1'>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant='ghost'
-                size='icon'
-                className='h-8 w-8'
-                onClick={() => router.push(`/dashboard/contracts/${data.id}`)}
-              >
-                <IconEye className='h-4 w-4' />
-                <span className='sr-only'>Ver</span>
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Ver</p>
-            </TooltipContent>
-          </Tooltip>
-
           <Tooltip>
             <TooltipTrigger asChild>
               <Button

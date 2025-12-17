@@ -28,10 +28,7 @@ export default async function Page(props: pageProps) {
     <PageContainer scrollable={false}>
       <div className='flex flex-1 flex-col space-y-4'>
         <div className='flex items-start justify-between'>
-          <Heading
-            title='Customers'
-            description='Manage customers (Server side table functionalities.)'
-          />
+          <Heading title='Clientes' />
           <CustomerActions />
         </div>
         <Separator />

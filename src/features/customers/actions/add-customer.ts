@@ -9,6 +9,8 @@ import { ValidationError } from '@/lib/errors';
 import { eq, and } from 'drizzle-orm';
 import { AccountType } from '@/db/enums';
 import { v7 as uuidv7 } from 'uuid';
+import { EVENTS } from '@/messaging/events';
+import { publishMessage } from '@/messaging/client';
 
 export const addCustomer = authActionClient
   .metadata({ actionName: 'addCustomer' })
@@ -54,7 +56,12 @@ export const addCustomer = authActionClient
       throw new ValidationError('Ya existe un cliente con ese nombre');
     }
 
-    await db.insert(accountTable).values(accountData);
+    const [account] = await db
+      .insert(accountTable)
+      .values(accountData)
+      .returning();
+
+    await publishMessage(EVENTS.CUSTOMER_UPSERTED, { account_id: account.id });
 
     revalidatePath('/dashboard/customers');
     return { message: 'Cliente creado exitosamente' };

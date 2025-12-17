@@ -43,10 +43,7 @@ export const columns: ColumnDef<ContractWithAccounts>[] = [
     id: 'marketer_currency',
     accessorKey: 'marketer_currency',
     header: ({ column }: { column: Column<ContractWithAccounts, unknown> }) => (
-      <DataTableColumnHeader
-        column={column}
-        title='Moneda del Cliente Externo'
-      />
+      <DataTableColumnHeader column={column} title='Moneda' />
     ),
     cell: ({ cell }) => (
       <div>{cell.getValue<ContractWithAccounts['marketer_currency']>()}</div>
@@ -78,35 +75,11 @@ export const columns: ColumnDef<ContractWithAccounts>[] = [
     id: 'provider_currency',
     accessorKey: 'provider_currency',
     header: ({ column }: { column: Column<ContractWithAccounts, unknown> }) => (
-      <DataTableColumnHeader
-        column={column}
-        title='Moneda del Proveedor Externo'
-      />
+      <DataTableColumnHeader column={column} title='Moneda' />
     ),
     cell: ({ cell }) => (
       <div>{cell.getValue<ContractWithAccounts['provider_currency']>()}</div>
     )
-  },
-  {
-    id: 'cto_producer_name',
-    accessorKey: 'cto_producer_name',
-    header: ({ column }: { column: Column<ContractWithAccounts, unknown> }) => (
-      <DataTableColumnHeader column={column} title='Productor Externo' />
-    ),
-    cell: ({ cell }) => (
-      <div>{cell.getValue<ContractWithAccounts['cto_producer_name']>()}</div>
-    )
-  },
-  {
-    id: 'cto_operator_name',
-    accessorKey: 'cto_operator_name',
-    header: ({ column }: { column: Column<ContractWithAccounts, unknown> }) => (
-      <DataTableColumnHeader column={column} title='Operador Externo' />
-    ),
-    cell: ({ cell }) => {
-      const value = cell.getValue<ContractWithAccounts['cto_operator_name']>();
-      return <div>{value || '-'}</div>;
-    }
   },
   {
     id: 'actions',

@@ -42,6 +42,71 @@ const emptyEditorState: SerializedEditorState = {
   }
 } as unknown as SerializedEditorState;
 
+// Convertir el string del campo a SerializedEditorState
+const parseEditorState = (value: string | undefined): SerializedEditorState => {
+  if (!value || value.trim() === '') {
+    return emptyEditorState;
+  }
+  try {
+    const parsed = JSON.parse(value) as SerializedEditorState;
+    // Verificar que el estado parseado tenga al menos un párrafo
+    if (
+      parsed?.root?.children &&
+      Array.isArray(parsed.root.children) &&
+      parsed.root.children.length > 0
+    ) {
+      return parsed;
+    }
+    return emptyEditorState;
+  } catch {
+    return emptyEditorState;
+  }
+};
+
+// Componente interno que maneja el estado del editor
+function RichTextEditor({
+  value,
+  onChange,
+  disabled
+}: {
+  value: string | undefined;
+  onChange: (value: string) => void;
+  disabled?: boolean;
+}) {
+  // Estado inicial basado en el valor del campo
+  const initialEditorState = useMemo(
+    () => parseEditorState(value),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
+
+  // Estado local para el editor
+  const [editorState, setEditorState] =
+    useState<SerializedEditorState>(initialEditorState);
+
+  // Sincronizar cuando cambia el valor del campo externamente
+  useEffect(() => {
+    const parsed = parseEditorState(value);
+    setEditorState(parsed);
+  }, [value]);
+
+  const handleChange = (newState: SerializedEditorState) => {
+    setEditorState(newState);
+    // Convertir SerializedEditorState a string JSON para guardar en la BD
+    const jsonString = JSON.stringify(newState);
+    onChange(jsonString);
+  };
+
+  return (
+    <div className={disabled ? 'pointer-events-none opacity-50' : ''}>
+      <Editor
+        editorSerializedState={editorState}
+        onSerializedChange={handleChange}
+      />
+    </div>
+  );
+}
+
 function FormRichText<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
@@ -51,7 +116,6 @@ function FormRichText<
   label,
   description,
   required,
-  placeholder,
   disabled,
   className
 }: FormRichTextProps<TFieldValues, TName>) {
@@ -59,76 +123,25 @@ function FormRichText<
     <FormField
       control={control}
       name={name}
-      render={({ field }) => {
-        // Convertir el string del campo a SerializedEditorState
-        const parseEditorState = (
-          value: string | undefined
-        ): SerializedEditorState => {
-          if (!value || value.trim() === '') {
-            return emptyEditorState;
-          }
-          try {
-            const parsed = JSON.parse(value) as SerializedEditorState;
-            // Verificar que el estado parseado tenga al menos un párrafo
-            if (
-              parsed?.root?.children &&
-              Array.isArray(parsed.root.children) &&
-              parsed.root.children.length > 0
-            ) {
-              return parsed;
-            }
-            return emptyEditorState;
-          } catch {
-            return emptyEditorState;
-          }
-        };
-
-        // Estado inicial basado en el valor del campo
-        const initialEditorState = useMemo(
-          () => parseEditorState(field.value),
-          // eslint-disable-next-line react-hooks/exhaustive-deps
-          []
-        );
-
-        // Estado local para el editor
-        const [editorState, setEditorState] =
-          useState<SerializedEditorState>(initialEditorState);
-
-        // Sincronizar cuando cambia el valor del campo externamente (solo si viene de fuera)
-        useEffect(() => {
-          const parsed = parseEditorState(field.value);
-          setEditorState(parsed);
-          // eslint-disable-next-line react-hooks/exhaustive-deps
-        }, [field.value]);
-
-        const handleChange = (newState: SerializedEditorState) => {
-          setEditorState(newState);
-          // Convertir SerializedEditorState a string JSON para guardar en la BD
-          const jsonString = JSON.stringify(newState);
-          field.onChange(jsonString);
-        };
-
-        return (
-          <FormItem className={className}>
-            {label && (
-              <FormLabel>
-                {label}
-                {required && <span className='ml-1 text-red-500'>*</span>}
-              </FormLabel>
-            )}
-            <FormControl>
-              <div className={disabled ? 'pointer-events-none opacity-50' : ''}>
-                <Editor
-                  editorSerializedState={editorState}
-                  onSerializedChange={handleChange}
-                />
-              </div>
-            </FormControl>
-            {description && <FormDescription>{description}</FormDescription>}
-            <FormMessage />
-          </FormItem>
-        );
-      }}
+      render={({ field }) => (
+        <FormItem className={className}>
+          {label && (
+            <FormLabel>
+              {label}
+              {required && <span className='ml-1 text-red-500'>*</span>}
+            </FormLabel>
+          )}
+          <FormControl>
+            <RichTextEditor
+              value={field.value}
+              onChange={field.onChange}
+              disabled={disabled}
+            />
+          </FormControl>
+          {description && <FormDescription>{description}</FormDescription>}
+          <FormMessage />
+        </FormItem>
+      )}
     />
   );
 }

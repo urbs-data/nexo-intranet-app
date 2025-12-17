@@ -52,7 +52,7 @@ export const company = {
 };
 
 const tenants = [
-  { id: '1', name: 'Acme Inc' },
+  { id: '1', name: 'NEXO' },
   { id: '2', name: 'Beta Corp' },
   { id: '3', name: 'Gamma Ltd' }
 ];
@@ -84,7 +84,7 @@ export default function AppSidebar() {
       </SidebarHeader>
       <SidebarContent className='overflow-x-hidden'>
         <SidebarGroup>
-          <SidebarGroupLabel>Overview</SidebarGroupLabel>
+          <SidebarGroupLabel>Menu</SidebarGroupLabel>
           <SidebarMenu>
             {navItems.map((item) => {
               const Icon = item.icon ? Icons[item.icon] : Icons.logo;

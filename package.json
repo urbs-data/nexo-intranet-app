@@ -15,7 +15,9 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
-    "db:generate-custom": "drizzle-kit generate --custom"
+    "db:generate-custom": "drizzle-kit generate --custom",
+    "messaging:run": "PUBSUB_EMULATOR_HOST=localhost:8085 GOOGLE_CLOUD_PROJECT=local-dev gcloud beta emulators pubsub start --project=local-dev",
+    "messaging:forwarder": "tsx forwarder.ts"
   },
   "lint-staged": {
     "**/*.{js,jsx,tsx,ts,css,less,scss,sass}": [

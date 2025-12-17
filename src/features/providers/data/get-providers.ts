@@ -12,7 +12,6 @@ import {
   eq,
   like,
   and,
-  or,
   asc,
   desc,
   SQL,

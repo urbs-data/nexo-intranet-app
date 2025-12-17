@@ -9,6 +9,8 @@ import { ValidationError } from '@/lib/errors';
 import { eq, and } from 'drizzle-orm';
 import { AccountType } from '@/db/enums';
 import { v7 as uuidv7 } from 'uuid';
+import { publishMessage } from '@/messaging/client';
+import { EVENTS } from '@/messaging/events';
 
 export const addProvider = authActionClient
   .metadata({ actionName: 'addProvider' })
@@ -35,8 +37,6 @@ export const addProvider = authActionClient
       updated_at: new Date()
     };
 
-    console.log(accountData);
-
     const existingAccount = await db
       .select()
       .from(accountTable)
@@ -52,7 +52,12 @@ export const addProvider = authActionClient
       throw new ValidationError('Ya existe un proveedor con ese nombre');
     }
 
-    await db.insert(accountTable).values(accountData);
+    const [account] = await db
+      .insert(accountTable)
+      .values(accountData)
+      .returning();
+
+    await publishMessage(EVENTS.PROVIDER_UPSERTED, { account_id: account.id });
 
     revalidatePath('/dashboard/providers');
     return { message: 'Proveedor creado exitosamente' };

@@ -11,13 +11,15 @@ import { ValidationError } from '@/lib/errors';
 import { eq, and } from 'drizzle-orm';
 import { AccountType } from '@/db/enums';
 
-export type CustomerWithCountry = Account & {
+export type CustomerDTO = Account & {
   country_name: string | null;
+  created_at: Date | null;
+  ended_at: Date | null;
 };
 
 export async function getCustomerById(
   input: GetCustomerByIdSchema
-): Promise<CustomerWithCountry | null> {
+): Promise<CustomerDTO | null> {
   const result = getCustomerByIdSchema.safeParse(input);
   if (!result.success) {
     throw new ValidationError(JSON.stringify(result.error));
@@ -46,6 +48,7 @@ export async function getCustomerById(
       can_book_with_overdraft: accountTable.can_book_with_overdraft,
       created_at: accountTable.created_at,
       updated_at: accountTable.updated_at,
+      // ended_at: accountTable.ended_at,
       country_name: countryTable.name_es
     })
     .from(accountTable)
@@ -58,5 +61,5 @@ export async function getCustomerById(
     )
     .limit(1);
 
-  return account as CustomerWithCountry | null;
+  return account as CustomerDTO | null;
 }

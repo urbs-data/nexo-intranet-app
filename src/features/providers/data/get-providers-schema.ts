@@ -8,7 +8,7 @@ export const getProvidersSchema = z.object({
   countryId: z.number().optional(),
   sortBy: z.string().optional(),
   sortDirection: z.enum(['asc', 'desc']).optional(),
-  ids: z.array(z.string().uuid()).optional()
+  ids: z.array(z.uuid()).optional()
 });
 
 export type GetProvidersSchema = z.infer<typeof getProvidersSchema>;
