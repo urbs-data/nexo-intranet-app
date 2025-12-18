@@ -40,13 +40,13 @@ export function ContractMapModal({
   const [providerInternalId, setProviderInternalId] = useState<string | null>(
     () => contract.account_provider_id || null
   );
-  const [mapSameName, setMapSameName] = useState(false);
+  const [mapSameName, setMapSameName] = useState(true);
 
   const handleOpenChange = (open: boolean) => {
     if (open) {
       setCustomerInternalId(contract.account_customer_id || null);
       setProviderInternalId(contract.account_provider_id || null);
-      setMapSameName(false);
+      setMapSameName(true);
     } else {
       onClose();
     }

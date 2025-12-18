@@ -16,8 +16,12 @@ const META_THEME_COLORS = {
 };
 
 export const metadata: Metadata = {
-  title: 'Next Shadcn',
-  description: 'Basic dashboard with Next.js and Shadcn'
+  title: 'Nexo Intranet',
+  description: 'Nexo Intranet',
+  icons: {
+    icon: '/logo-sm_us.svg',
+    apple: '/logo-sm_us.svg'
+  }
 };
 
 export const viewport: Viewport = {

@@ -1,25 +1,25 @@
 'use client';
 
 import { DataTable } from '@/components/ui/table/data-table';
-import { CustomerTableActions } from './table-actions';
+import { BookingTableActions } from './table-actions';
 
 import { useDataTable } from '@/hooks/use-data-table';
 
 import { ColumnDef } from '@tanstack/react-table';
 import { parseAsInteger, useQueryState } from 'nuqs';
-import { CustomerWithCountry } from '../../data/get-customers';
+import { BookingListDTO } from '../../data/get-bookings';
 
-interface CustomerTableParams<TValue> {
-  data: CustomerWithCountry[];
+interface BookingTableParams<TValue> {
+  data: BookingListDTO[];
   totalItems: number;
-  columns: ColumnDef<CustomerWithCountry, TValue>[];
+  columns: ColumnDef<BookingListDTO, TValue>[];
 }
 
-export function CustomerTable<TValue>({
+export function BookingTable<TValue>({
   data,
   totalItems,
   columns
-}: CustomerTableParams<TValue>) {
+}: BookingTableParams<TValue>) {
   const [pageSize] = useQueryState('perPage', parseAsInteger.withDefault(50));
 
   const pageCount = Math.ceil(totalItems / pageSize);
@@ -38,7 +38,7 @@ export function CustomerTable<TValue>({
       totalItems={totalItems}
       showViewOptions={false}
       tableActions={
-        <CustomerTableActions table={table} totalItems={totalItems} />
+        <BookingTableActions table={table} totalItems={totalItems} />
       }
     />
   );

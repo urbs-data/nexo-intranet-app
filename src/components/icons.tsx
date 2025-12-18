@@ -30,13 +30,15 @@ import {
   IconUserX,
   IconX,
   IconLayoutKanban,
-  IconBrandGithub
+  IconBrandGithub,
+  IconCalendar
 } from '@tabler/icons-react';
 
 export type Icon = React.ComponentType<IconProps>;
 
 export const Icons = {
   dashboard: IconLayoutDashboard,
+  calendar: IconCalendar,
   logo: IconCommand,
   login: IconLogin,
   close: IconX,

@@ -11,7 +11,7 @@ import { SearchParams } from 'nuqs/server';
 import { Suspense } from 'react';
 
 export const metadata = {
-  title: 'Dashboard: Customers'
+  title: 'Intranet: Clientes'
 };
 
 type pageProps = {

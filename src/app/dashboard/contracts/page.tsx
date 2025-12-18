@@ -11,7 +11,7 @@ import { SearchParams } from 'nuqs/server';
 import { Suspense } from 'react';
 
 export const metadata = {
-  title: 'Dashboard: Contratos'
+  title: 'Intranet: Contratos'
 };
 
 type pageProps = {
@@ -28,10 +28,7 @@ export default async function Page(props: pageProps) {
     <PageContainer scrollable={false}>
       <div className='flex flex-1 flex-col space-y-4'>
         <div className='flex items-start justify-between'>
-          <Heading
-            title='Contratos'
-            description='Gestionar contratos (Solo visualización y listado.)'
-          />
+          <Heading title='Contratos' />
           <ContractActions />
         </div>
         <Separator />

@@ -35,7 +35,8 @@ export default function ProviderNewForm() {
       currency: '',
       comments: '',
       support_contact_info: '',
-      is_active: true
+      is_active: true,
+      quickbooks_id: '-'
     }
   });
   const canSubmit = !form.formState.isSubmitting && form.formState.isValid;

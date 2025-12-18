@@ -11,6 +11,14 @@ export const navItems: NavItem[] = [
     items: [] // Empty array as there are no child items for Dashboard
   },
   {
+    title: 'Reservas',
+    url: '/dashboard/bookings',
+    icon: 'calendar',
+    isActive: false,
+    shortcut: ['b', 'b'],
+    items: [] // Empty array as there are no child items for Bookings
+  },
+  {
     title: 'Cuentas',
     url: '#', // Placeholder as there is no direct link for the parent
     icon: 'user',
