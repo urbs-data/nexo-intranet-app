@@ -13,7 +13,8 @@ import {
   SQL,
   count,
   inArray,
-  sql
+  sql,
+  isNull
 } from 'drizzle-orm';
 import { alias } from 'drizzle-orm/pg-core';
 import {
@@ -107,6 +108,14 @@ export async function getBookings(input: GetBookingsSchema): Promise<{
 
   if (parsedInput.ids && parsedInput.ids.length > 0) {
     conditions.push(inArray(bookingTable.id, parsedInput.ids));
+  }
+
+  if (parsedInput.withoutFile === 'true') {
+    conditions.push(isNull(bookingTable.file_created_at));
+  }
+
+  if (parsedInput.status) {
+    conditions.push(eq(bookingTable.status, parsedInput.status));
   }
 
   const whereClause = conditions.length > 0 ? and(...conditions) : undefined;

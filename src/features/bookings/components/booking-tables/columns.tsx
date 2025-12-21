@@ -7,23 +7,7 @@ import { Column, ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale/es';
 import { BookingStatus } from '@/db/enums';
-
-const getStatusLabel = (status: BookingStatus): string => {
-  const statusMap: Record<BookingStatus, string> = {
-    [BookingStatus.CANCELLATION_PENDING]: 'Cancelación Pendiente',
-    [BookingStatus.CANCELLATION_FAILED]: 'Cancelación Fallida',
-    [BookingStatus.CANCELLED]: 'Cancelado',
-    [BookingStatus.CANCELLED_WITH_CHARGES]: 'Cancelado con Cargos',
-    [BookingStatus.CONFIRMATION_DENIED]: 'Confirmación Denegada',
-    [BookingStatus.CONFIRMATION_PENDING]: 'Confirmación Pendiente',
-    [BookingStatus.CONFIRMED]: 'Confirmada',
-    [BookingStatus.MIXED]: 'Mixto',
-    [BookingStatus.REBOOKING]: 'Re-reserva',
-    [BookingStatus.REJECTED]: 'Rechazado',
-    [BookingStatus.REQUEST_FAILED]: 'Solicitud Fallida'
-  };
-  return statusMap[status] || status;
-};
+import { getBookingStatusLabel } from '@/features/shared/booking-status';
 
 const getStatusBadgeStyles = (
   status: string | BookingStatus
@@ -107,7 +91,7 @@ export const columns: ColumnDef<BookingListDTO>[] = [
           style={getStatusBadgeStyles(status)}
           className='capitalize'
         >
-          {getStatusLabel(status as BookingStatus)}
+          {getBookingStatusLabel(status as BookingStatus)}
         </Badge>
       );
     },

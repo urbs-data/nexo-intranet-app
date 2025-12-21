@@ -2,6 +2,7 @@ import { bookingSearchParamsCache } from '@/features/bookings/searchparams';
 import { BookingTable } from './booking-tables';
 import { columns } from './booking-tables/columns';
 import { getBookings } from '../data/get-bookings';
+import { BookingStatus } from '@/db/enums';
 
 type BookingListPage = {};
 
@@ -11,13 +12,17 @@ export default async function BookingListPage({}: BookingListPage) {
   const search = bookingSearchParamsCache.get('search');
   const sortBy = bookingSearchParamsCache.get('sortBy');
   const sortDirection = bookingSearchParamsCache.get('sortDirection');
+  const withoutFile = bookingSearchParamsCache.get('withoutFile');
+  const status = bookingSearchParamsCache.get('status');
 
   const filters = {
     page,
     limit: pageLimit,
     ...(search && { search }),
     ...(sortBy && { sortBy }),
-    ...(sortDirection && { sortDirection })
+    ...(sortDirection && { sortDirection }),
+    ...(withoutFile && { withoutFile }),
+    ...(status && { status: status as BookingStatus })
   };
 
   const data = await getBookings(filters);
