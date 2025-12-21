@@ -131,3 +131,81 @@ body {
     @apply !rounded-none !shadow-none;
   }
 }
+
+@layer utilities {
+  .text-success {
+    color: oklch(0.5 0.15 145);
+  }
+
+  .text-error {
+    color: oklch(0.5 0.15 25);
+  }
+
+  .text-warning {
+    color: oklch(0.55 0.15 85);
+  }
+
+  .text-info {
+    color: oklch(0.55 0.15 245);
+  }
+
+  .text-muted-dark {
+    color: oklch(0.3 0 0);
+  }
+
+  .bg-success {
+    background-color: var(--success);
+  }
+
+  .bg-error {
+    background-color: var(--error);
+  }
+
+  .bg-warning {
+    background-color: var(--warning);
+  }
+
+  .bg-success-subtle {
+    background-color: oklch(from var(--success) l c h / 0.2);
+  }
+
+  .bg-error-subtle {
+    background-color: oklch(from var(--error) l c h / 0.2);
+  }
+
+  .bg-warning-subtle {
+    background-color: oklch(from var(--warning) l c h / 0.2);
+  }
+
+  .bg-info-subtle {
+    background-color: oklch(0.7 0.1 245 / 0.18);
+  }
+
+  .bg-muted-subtle {
+    background-color: oklch(0.9 0 0 / 0.25);
+  }
+
+  .bg-muted-dark-subtle {
+    background-color: oklch(0.3 0 0 / 0.18);
+  }
+
+  .bg-secondary-subtle {
+    background-color: oklch(from var(--secondary) l c h / 0.5);
+  }
+
+  .text-secondary {
+    color: oklch(0.4 0 0);
+  }
+
+  .border-success {
+    border-color: var(--success);
+  }
+
+  .border-error {
+    border-color: var(--error);
+  }
+
+  .border-warning {
+    border-color: var(--warning);
+  }
+}

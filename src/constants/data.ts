@@ -8,7 +8,15 @@ export const navItems: NavItem[] = [
     icon: 'dashboard',
     isActive: false,
     shortcut: ['d', 'd'],
-    items: [] // Empty array as there are no child items for Dashboard
+    items: []
+  },
+  {
+    title: 'Files',
+    url: '/dashboard/files',
+    icon: 'file',
+    isActive: false,
+    shortcut: ['f', 'f'],
+    items: []
   },
   {
     title: 'Reservas',
@@ -16,7 +24,7 @@ export const navItems: NavItem[] = [
     icon: 'calendar',
     isActive: false,
     shortcut: ['b', 'b'],
-    items: [] // Empty array as there are no child items for Bookings
+    items: []
   },
   {
     title: 'Cuentas',

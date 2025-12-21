@@ -1,67 +1,13 @@
 'use client';
-import React from 'react';
-import { Badge } from '@/components/ui/badge';
 import { DataTableColumnHeader } from '@/components/ui/table/data-table-column-header';
 import { BookingListDTO } from '../../data/get-bookings';
 import { Column, ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale/es';
 import { BookingStatus } from '@/db/enums';
-import { getBookingStatusLabel } from '@/features/shared/booking-status';
-
-const getStatusBadgeStyles = (
-  status: string | BookingStatus
-): React.CSSProperties => {
-  if (status === BookingStatus.CONFIRMED) {
-    return {
-      backgroundColor: 'var(--success)',
-      color: 'var(--success-foreground)',
-      borderColor: 'transparent'
-    };
-  }
-
-  if (
-    status === BookingStatus.REQUEST_FAILED ||
-    status === BookingStatus.CANCELLATION_FAILED ||
-    status === BookingStatus.CONFIRMATION_PENDING ||
-    status === BookingStatus.CANCELLATION_PENDING
-  ) {
-    return {
-      backgroundColor: 'var(--error)',
-      color: 'var(--error-foreground)',
-      borderColor: 'transparent'
-    };
-  }
-
-  if (
-    status === BookingStatus.CONFIRMATION_DENIED ||
-    status === BookingStatus.REBOOKING ||
-    status === BookingStatus.MIXED
-  ) {
-    return {
-      backgroundColor: 'var(--warning)',
-      color: 'var(--warning-foreground)',
-      borderColor: 'transparent'
-    };
-  }
-
-  return {
-    backgroundColor: 'var(--secondary)',
-    color: 'var(--secondary-foreground)',
-    borderColor: 'transparent'
-  };
-};
-
-const formatCurrency = (value: string | null, currency: string): string => {
-  if (!value) return '-';
-  const numValue = parseFloat(value);
-  return new Intl.NumberFormat('es-ES', {
-    style: 'currency',
-    currency: currency || 'USD',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0
-  }).format(numValue);
-};
+import { BookingStatusBadge } from '@/features/shared/components/booking-status-badge';
+import { formatCurrency } from '@/lib/format-currency';
+import Link from 'next/link';
 
 export const columns: ColumnDef<BookingListDTO>[] = [
   {
@@ -85,15 +31,7 @@ export const columns: ColumnDef<BookingListDTO>[] = [
     ),
     cell: ({ cell }) => {
       const status = cell.getValue<BookingListDTO['status']>();
-      return (
-        <Badge
-          variant='outline'
-          style={getStatusBadgeStyles(status)}
-          className='capitalize'
-        >
-          {getBookingStatusLabel(status as BookingStatus)}
-        </Badge>
-      );
+      return <BookingStatusBadge status={status as BookingStatus} />;
     },
     size: 100
   },
@@ -147,10 +85,18 @@ export const columns: ColumnDef<BookingListDTO>[] = [
     cell: ({ row }) => {
       const fileCreatedAt = row.original.file_created_at;
       const filePublicId = row.original.file_public_id;
-      if (!fileCreatedAt) {
+      const fileId = row.original.id;
+      if (!fileCreatedAt || !filePublicId) {
         return <div>-</div>;
       }
-      return <div className='font-medium'>{filePublicId || '-'}</div>;
+      return (
+        <Link
+          href={`/dashboard/files/${fileId}`}
+          className='text-primary font-medium hover:underline'
+        >
+          {filePublicId}
+        </Link>
+      );
     },
     size: 100
   },
@@ -228,10 +174,10 @@ export const columns: ColumnDef<BookingListDTO>[] = [
 
       return (
         <div className='text-right'>
-          <div>{formatCurrency(netPrice, marketerCurrency)}</div>
+          <div>{formatCurrency(netPrice, marketerCurrency, 0)}</div>
           {hasUsdPrice && netPriceUsd !== netPrice && (
             <div className='text-muted-foreground text-xs'>
-              {formatCurrency(netPriceUsd, 'USD')}
+              {formatCurrency(netPriceUsd, 'USD', 0)}
             </div>
           )}
         </div>

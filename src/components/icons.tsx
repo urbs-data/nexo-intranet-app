@@ -38,6 +38,7 @@ export type Icon = React.ComponentType<IconProps>;
 
 export const Icons = {
   dashboard: IconLayoutDashboard,
+  file: IconFile,
   calendar: IconCalendar,
   logo: IconCommand,
   login: IconLogin,
