@@ -59,6 +59,8 @@ export function ContractMapModal({
           contractId: contract.id,
           customerInternalId: customerInternalId || undefined,
           providerInternalId: providerInternalId || undefined,
+          customerCurrency: contract.marketer_currency!,
+          providerCurrency: contract.provider_currency!,
           mapSameName: mapSameName || false
         })
       );
