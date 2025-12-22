@@ -47,4 +47,8 @@ next-env.d.ts
 # Sentry Config File
 .env.sentry-build-plugin
 
+# Cloud Run Environment Variables
+cloudrun-env.yaml
+.env.build
+
 local.db
