@@ -7,7 +7,7 @@ import { accountTable } from '@/db/schema';
 import { revalidatePath } from 'next/cache';
 import { ValidationError } from '@/lib/errors';
 import { eq, and } from 'drizzle-orm';
-import { AccountType } from '@/db/enums';
+import { AccountType, PaymentRule } from '@/db/enums';
 import { v7 as uuidv7 } from 'uuid';
 import { EVENTS } from '@/messaging/events';
 import { publishMessage } from '@/messaging/client';
@@ -20,7 +20,8 @@ export const addCustomer = authActionClient
       id: uuidv7(),
       name: parsedInput.name,
       account_type: AccountType.CUSTOMER,
-      payment_rule_id: parsedInput.payment_rule_id,
+      payment_rule_id:
+        PaymentRule[parsedInput.payment_rule_id as keyof typeof PaymentRule],
       country_id: parsedInput.country_id
         ? parseInt(parsedInput.country_id)
         : null,

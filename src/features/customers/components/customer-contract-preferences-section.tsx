@@ -24,6 +24,7 @@ export function CustomerContractPreferencesSection({
           name='bank_account'
           label='Cuenta Bancaria'
           placeholder='Ingrese la cuenta bancaria'
+          required
           disabled={isDisabled}
         />
 
@@ -34,6 +35,7 @@ export function CustomerContractPreferencesSection({
           placeholder='Ingrese el monto máximo'
           type='number'
           step='0.01'
+          required
           disabled={isDisabled}
         />
 
@@ -44,6 +46,7 @@ export function CustomerContractPreferencesSection({
           placeholder='Ingrese el límite de saldo'
           type='number'
           step='0.01'
+          required
           disabled={isDisabled}
         />
       </div>

@@ -70,6 +70,7 @@ export function ProviderGeneralInfoSection({
           label='País'
           placeholder='Seleccione un país'
           searchPlaceholder='Buscar país...'
+          required
           disabled={isDisabled}
           options={countries}
           isLoading={isLoadingCountries}
@@ -81,6 +82,7 @@ export function ProviderGeneralInfoSection({
           name='address'
           label='Dirección'
           placeholder='Ingrese la dirección'
+          required
           disabled={isDisabled}
           className='md:col-span-2'
         />
@@ -90,6 +92,7 @@ export function ProviderGeneralInfoSection({
           name='city'
           label='Ciudad'
           placeholder='Ingrese la ciudad'
+          required
           disabled={isDisabled}
           className='md:col-span-2'
         />
@@ -101,6 +104,7 @@ export function ProviderGeneralInfoSection({
           placeholder='Seleccione un idioma'
           options={LANGUAGES}
           disabled={isDisabled}
+          required
         />
 
         <div>
@@ -111,6 +115,7 @@ export function ProviderGeneralInfoSection({
             checkboxLabel='Activo'
             disabled={isDisabled}
             className='py-1.5'
+            required
           />
         </div>
       </div>

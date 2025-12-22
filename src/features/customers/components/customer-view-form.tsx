@@ -22,8 +22,8 @@ import { Heading } from '@/components/ui/heading';
 import { CustomerGeneralInfoSection } from './customer-general-info-section';
 import { CustomerContractSection } from './customer-contract-section';
 import { CustomerContractPreferencesSection } from './customer-contract-preferences-section';
-import { format } from 'date-fns';
-import { es } from 'date-fns/locale/es';
+import { formatDate } from '@/lib/format-date';
+import { PaymentRule } from '@/db/enums';
 
 export default function CustomerViewForm({
   initialData,
@@ -38,32 +38,25 @@ export default function CustomerViewForm({
     schema: addCustomerSchema,
     mode: 'all',
     defaultValues: {
-      name: initialData?.name || '',
-      business_name: initialData?.business_name || '',
-      payment_rule_id: initialData?.payment_rule_id || 'DEFAULT',
-      country_id: initialData?.country_id?.toString() || undefined,
-      address: initialData?.address || '',
-      city: initialData?.city || '',
-      language: initialData?.language || '',
-      tax_id: initialData?.tax_id || '',
-      currency: initialData?.currency || '',
-      comments: initialData?.comments || '',
-      bank_account: initialData?.bank_account || '',
-      max_overdraft_amount: initialData?.max_overdraft_amount || undefined,
-      minimum_balance: initialData?.minimum_balance || undefined,
-      can_book_with_balance: initialData?.can_book_with_balance || false,
-      can_book_with_overdraft: initialData?.can_book_with_overdraft || false,
-      is_active: initialData?.is_active ?? true,
-      quickbooks_id: initialData?.quickbooks_id || '-',
-      created_at:
-        format(new Date(initialData?.created_at), 'yyyy-MM-dd', {
-          locale: es
-        }) || undefined,
-      ended_at: initialData?.ended_at
-        ? format(new Date(initialData.ended_at), 'yyyy-MM-dd', {
-            locale: es
-          })
-        : '-'
+      name: initialData.name,
+      business_name: initialData.business_name || '',
+      payment_rule_id: initialData.payment_rule_id || PaymentRule.DEFAULT,
+      country_id: initialData.country_id?.toString() || '',
+      address: initialData.address || '',
+      city: initialData.city || '',
+      language: initialData.language || '',
+      tax_id: initialData.tax_id || '',
+      currency: initialData.currency || '',
+      comments: initialData.comments || '',
+      bank_account: initialData.bank_account || '',
+      max_overdraft_amount: initialData.max_overdraft_amount || undefined,
+      minimum_balance: initialData.minimum_balance || undefined,
+      can_book_with_balance: initialData.can_book_with_balance || false,
+      can_book_with_overdraft: initialData.can_book_with_overdraft || false,
+      is_active: initialData.is_active ?? true,
+      quickbooks_id: initialData.quickbooks_id || '-',
+      created_at: formatDate(initialData.created_at),
+      ended_at: formatDate(initialData.ended_at)
     }
   });
 

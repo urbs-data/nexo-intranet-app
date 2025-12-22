@@ -14,7 +14,12 @@ import {
   date,
   pgEnum
 } from 'drizzle-orm/pg-core';
-import { BookingStatus, FileCustomerStatus, FileProviderStatus } from './enums';
+import {
+  BookingStatus,
+  FileCustomerStatus,
+  FileProviderStatus,
+  PaymentRule
+} from './enums';
 
 export const productsTable = pgTable(
   'products_table',
@@ -47,31 +52,70 @@ export const countryTable = pgTable('country', {
 export type Country = typeof countryTable.$inferSelect;
 export type NewCountry = typeof countryTable.$inferInsert;
 
+// PaymentRule table
+export const paymentRuleEnum = pgEnum('payment_rule', [
+  PaymentRule.DEFAULT,
+  PaymentRule.FIRST_MONDAY,
+  PaymentRule.FIRST_MON_NORFND,
+  PaymentRule.FIRST_MON_CANCEL,
+  PaymentRule.FNIGHT_CHECKIN,
+  PaymentRule.FNIGHT_CHKIN_5,
+  PaymentRule.FNIGHT_CHKIN_10,
+  PaymentRule.FNIGHT_CHKIN_15,
+  PaymentRule.FNIGHT_CHKIN_5_NORFND,
+  PaymentRule.FNIGHT_CHKIN_10_NORFND,
+  PaymentRule.FNIGHT_CHKIN_15_NORFND,
+  PaymentRule.FNIGHT_CHKIN_0_NORFND,
+  PaymentRule.FNIGHT_AUTOCANCEL,
+  PaymentRule.WEEK_CHECKIN_7,
+  PaymentRule.WEEK_CHECKOUT,
+  PaymentRule.TENS_CHECKIN_7,
+  PaymentRule.NEXT_MONTH,
+  PaymentRule.CANPOLICIES_7,
+  PaymentRule.CANPOLICIES_4,
+  PaymentRule.CANPOLICIES_3,
+  PaymentRule.CANPOLICIES_2,
+  PaymentRule.CANPOLICIES_1,
+  PaymentRule.AUTOCANCEL_7,
+  PaymentRule.AUTOCANCEL_6,
+  PaymentRule.AUTOCANCEL_5,
+  PaymentRule.AUTOCANCEL_4,
+  PaymentRule.AUTOCANCEL_3,
+  PaymentRule.AUTOCANCEL_2,
+  PaymentRule.AUTOCANCEL_1,
+  PaymentRule.CHECKIN_PLUS_1,
+  PaymentRule.CHECKIN_PLUS_2,
+  PaymentRule.CHECKIN_PLUS_29,
+  PaymentRule.CHECKIN_MINUS_1,
+  PaymentRule.CHECKIN_MINUS_4,
+  PaymentRule.CHECKIN_MINUS_7,
+  PaymentRule.EVERY_10_DAYS
+]);
+
 // Account table
 export const accountTable = pgTable('account', {
   id: uuid('id').primaryKey().defaultRandom(),
   name: varchar('name', { length: 255 }).notNull(),
   account_type: varchar('account_type', { length: 50 }).notNull(),
-  payment_rule_id: varchar('payment_rule_id', { length: 50 })
+  payment_rule_id: paymentRuleEnum('payment_rule_id')
     .notNull()
-    .default('DEFAULT'),
+    .default(PaymentRule.DEFAULT),
   country_id: integer('country_id').references(() => countryTable.id),
   is_active: boolean('is_active').notNull().default(true),
   quickbooks_id: varchar('quickbooks_id', { length: 255 }),
-  // Campos adicionales para la vista de detalle - AGREGAR EN PYTHON
-  business_name: varchar('business_name', { length: 255 }), // nombre fantasia
-  address: text('address'), // direccion
-  city: varchar('city', { length: 255 }), // ciudad
-  language: varchar('language', { length: 50 }), // idioma
-  tax_id: varchar('tax_id', { length: 100 }), // nro identificacion fiscal
-  currency: varchar('currency', { length: 10 }), // moneda
-  comments: text('comments'), // comentarios internos
-  bank_account: varchar('bank_account', { length: 255 }), // cuenta bancaria
-  max_overdraft_amount: real('max_overdraft_amount'), // monto maximo descubierto
-  minimum_balance: real('minimum_balance'), // limite de saldo
-  can_book_with_balance: boolean('can_book_with_balance').default(false), // puede tomar reservas en gastos con saldo disponible
-  can_book_with_overdraft: boolean('can_book_with_overdraft').default(false), // puede tomar reservas en gastos con descubierto disponible
-  support_contact_info: text('support_contact_info'), // información de contacto para soporte a clientes (texto rico)
+  business_name: varchar('business_name', { length: 255 }),
+  address: text('address'),
+  city: varchar('city', { length: 255 }),
+  language: varchar('language', { length: 50 }),
+  tax_id: varchar('tax_id', { length: 100 }),
+  currency: varchar('currency', { length: 10 }),
+  comments: text('comments'),
+  bank_account: varchar('bank_account', { length: 255 }),
+  max_overdraft_amount: real('max_overdraft_amount'),
+  minimum_balance: real('minimum_balance'),
+  can_book_with_balance: boolean('can_book_with_balance').default(false),
+  can_book_with_overdraft: boolean('can_book_with_overdraft').default(false),
+  support_contact_info: text('support_contact_info'),
   created_at: timestamp('created_at').notNull().defaultNow(),
   updated_at: timestamp('updated_at').notNull().defaultNow()
 });

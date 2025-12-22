@@ -6,14 +6,13 @@ import { resolveActionResult } from '@/lib/actions/client';
 import { useRouter } from 'next/navigation';
 import { SubmitHandler } from 'react-hook-form';
 import { addCustomer } from '../actions/add-customer';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import {
   addCustomerSchema,
   AddCustomerSchema
 } from '../actions/add-customer-schema';
 import { toast } from 'sonner';
 import { useZodForm } from '@/hooks/use-zod-form';
-import { getCountries } from '@/features/shared/data/get-countries';
 import { Separator } from '@/components/ui/separator';
 import { Heading } from '@/components/ui/heading';
 import { CustomerGeneralInfoSection } from './customer-general-info-section';
@@ -21,6 +20,7 @@ import { CustomerContractSection } from './customer-contract-section';
 import { CustomerContractPreferencesSection } from './customer-contract-preferences-section';
 import { format } from 'date-fns/format';
 import { es } from 'date-fns/locale/es';
+import { PaymentRule } from '@/db/enums';
 
 export default function CustomerNewForm() {
   const form = useZodForm({
@@ -29,8 +29,8 @@ export default function CustomerNewForm() {
     defaultValues: {
       name: '',
       business_name: '',
-      payment_rule_id: 'DEFAULT',
-      country_id: undefined,
+      payment_rule_id: PaymentRule.DEFAULT,
+      country_id: '',
       address: '',
       city: '',
       language: '',
@@ -38,8 +38,8 @@ export default function CustomerNewForm() {
       currency: '',
       comments: '',
       bank_account: '',
-      max_overdraft_amount: undefined,
-      minimum_balance: undefined,
+      max_overdraft_amount: undefined as number | undefined,
+      minimum_balance: undefined as number | undefined,
       can_book_with_balance: false,
       can_book_with_overdraft: false,
       is_active: true,

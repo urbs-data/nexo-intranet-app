@@ -27,6 +27,7 @@ export function ProviderContractSection({
           label='Razón social'
           placeholder='Ingrese la razón social'
           disabled={isDisabled}
+          required
         />
 
         <FormInput
@@ -35,6 +36,7 @@ export function ProviderContractSection({
           label='Nro. de identificación fiscal'
           placeholder='Ingrese el número de identificación fiscal'
           disabled={isDisabled}
+          required
         />
 
         <FormInput
@@ -61,6 +63,7 @@ export function ProviderContractSection({
           placeholder='Seleccione la moneda'
           options={CURRENCIES}
           disabled={isDisabled}
+          required
         />
 
         <div>

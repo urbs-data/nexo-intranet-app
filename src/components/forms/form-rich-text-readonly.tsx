@@ -62,7 +62,7 @@ export function FormRichTextReadonly({
 
   return (
     <div className={cn('select-text', className)}>
-      <div className='pointer-events-none [&_*]:pointer-events-none'>
+      <div className='pointer-events-none opacity-20 [&_*]:pointer-events-none'>
         <Editor editorSerializedState={editorState} />
       </div>
     </div>

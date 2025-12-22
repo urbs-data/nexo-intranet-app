@@ -18,6 +18,7 @@ import { Heading } from '@/components/ui/heading';
 import { ProviderGeneralInfoSection } from './provider-general-info-section';
 import { ProviderContractSection } from './provider-contract-section';
 import { ProviderSupportSection } from './provider-support-section';
+import { PaymentRule } from '@/db/enums';
 
 export default function ProviderNewForm() {
   const form = useZodForm({
@@ -26,8 +27,8 @@ export default function ProviderNewForm() {
     defaultValues: {
       name: '',
       business_name: '',
-      payment_rule_id: 'DEFAULT',
-      country_id: undefined,
+      payment_rule_id: PaymentRule.DEFAULT,
+      country_id: '',
       address: '',
       city: '',
       language: '',

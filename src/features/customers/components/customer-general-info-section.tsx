@@ -74,6 +74,7 @@ export function CustomerGeneralInfoSection({
           options={countries}
           isLoading={isLoadingCountries}
           searchMode='static'
+          required
         />
 
         <FormInput
@@ -83,6 +84,7 @@ export function CustomerGeneralInfoSection({
           placeholder='Ingrese la dirección'
           disabled={isDisabled}
           className='md:col-span-2'
+          required
         />
 
         <FormInput
@@ -92,6 +94,7 @@ export function CustomerGeneralInfoSection({
           placeholder='Ingrese la ciudad'
           disabled={isDisabled}
           className='md:col-span-2'
+          required
         />
 
         <FormSelect
@@ -101,6 +104,7 @@ export function CustomerGeneralInfoSection({
           placeholder='Seleccione un idioma'
           options={LANGUAGES}
           disabled={isDisabled}
+          required
         />
 
         <div>

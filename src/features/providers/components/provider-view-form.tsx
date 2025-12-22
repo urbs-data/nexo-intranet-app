@@ -22,6 +22,7 @@ import { Heading } from '@/components/ui/heading';
 import { ProviderGeneralInfoSection } from './provider-general-info-section';
 import { ProviderContractSection } from './provider-contract-section';
 import { ProviderSupportSection } from './provider-support-section';
+import { PaymentRule } from '@/db/enums';
 
 export default function ProviderViewForm({
   initialData,
@@ -36,19 +37,19 @@ export default function ProviderViewForm({
     schema: addProviderSchema,
     mode: 'all',
     defaultValues: {
-      name: initialData?.name || '',
-      business_name: initialData?.business_name || '',
-      payment_rule_id: initialData?.payment_rule_id || 'DEFAULT',
-      country_id: initialData?.country_id?.toString() || undefined,
-      address: initialData?.address || '',
-      city: initialData?.city || '',
-      language: initialData?.language || '',
-      tax_id: initialData?.tax_id || '',
-      currency: initialData?.currency || '',
-      comments: initialData?.comments || '',
-      support_contact_info: initialData?.support_contact_info || '',
-      is_active: initialData?.is_active ?? true,
-      quickbooks_id: initialData?.quickbooks_id || '-'
+      name: initialData.name || '',
+      business_name: initialData.business_name || '',
+      payment_rule_id: initialData.payment_rule_id || PaymentRule.DEFAULT,
+      country_id: initialData.country_id?.toString() || '',
+      address: initialData.address || '',
+      city: initialData.city || '',
+      language: initialData.language || '',
+      tax_id: initialData.tax_id || '',
+      currency: initialData.currency || '',
+      comments: initialData.comments || '',
+      support_contact_info: initialData.support_contact_info || '',
+      is_active: initialData.is_active ?? true,
+      quickbooks_id: initialData.quickbooks_id || '-'
     }
   });
   const canSubmit = !form.formState.isSubmitting && form.formState.isValid;

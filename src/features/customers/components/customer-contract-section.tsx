@@ -5,6 +5,7 @@ import { FormSelect } from '@/components/forms/form-select';
 import { FormTextarea } from '@/components/forms/form-textarea';
 import { Control } from 'react-hook-form';
 import { PAYMENT_RULES, CURRENCIES } from '@/features/shared/data/constants';
+import { FormCombobox } from '@/components/forms/form-combobox';
 
 interface CustomerContractSectionProps {
   control: Control<any>;
@@ -27,6 +28,7 @@ export function CustomerContractSection({
           label='Razón social'
           placeholder='Ingrese la razón social'
           disabled={isDisabled}
+          required
         />
 
         <FormInput
@@ -35,6 +37,7 @@ export function CustomerContractSection({
           label='Nro. de identificación fiscal'
           placeholder='Ingrese el número de identificación fiscal'
           disabled={isDisabled}
+          required
         />
 
         <FormInput
@@ -44,7 +47,7 @@ export function CustomerContractSection({
           disabled={true}
         />
 
-        <FormSelect
+        <FormCombobox
           control={control}
           name='payment_rule_id'
           label='Forma de Pago'
@@ -61,6 +64,7 @@ export function CustomerContractSection({
           placeholder='Seleccione la moneda'
           options={CURRENCIES}
           disabled={isDisabled}
+          required
         />
 
         <div>
