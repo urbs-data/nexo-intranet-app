@@ -2,14 +2,13 @@
 import { DataTableColumnHeader } from '@/components/ui/table/data-table-column-header';
 import { FileListDTO } from '../../data/get-files';
 import { Column, ColumnDef } from '@tanstack/react-table';
-import { format } from 'date-fns';
-import { es } from 'date-fns/locale/es';
 import { BookingStatus } from '@/db/enums';
 import { BookingStatusBadge } from '@/features/shared/components/booking-status-badge';
 import { FileStatusBadge } from '@/features/shared/components/file-status-badge';
-import { CheckCircle2 } from 'lucide-react';
+import { CheckCircle2, BotIcon } from 'lucide-react';
 import Link from 'next/link';
 import { formatCurrency } from '@/lib/format-currency';
+import { formatDate } from '@/lib/format-date';
 
 export const columns: ColumnDef<FileListDTO>[] = [
   {
@@ -43,11 +42,7 @@ export const columns: ColumnDef<FileListDTO>[] = [
     ),
     cell: ({ cell }) => {
       const date = cell.getValue<FileListDTO['file_created_at']>();
-      return date ? (
-        <div>{format(new Date(date), 'dd/MM/yyyy', { locale: es })}</div>
-      ) : (
-        <div>-</div>
-      );
+      return date ? <div>{formatDate(date)}</div> : <div>-</div>;
     },
     size: 100
   },
@@ -93,7 +88,7 @@ export const columns: ColumnDef<FileListDTO>[] = [
     id: 'gross_price',
     accessorKey: 'gross_price',
     header: ({ column }: { column: Column<FileListDTO, unknown> }) => (
-      <DataTableColumnHeader column={column} title='Precio Venta' />
+      <DataTableColumnHeader column={column} title='P. Venta' />
     ),
     cell: ({ row }) => {
       const grossPrice = row.original.gross_price;
@@ -114,11 +109,7 @@ export const columns: ColumnDef<FileListDTO>[] = [
     ),
     cell: ({ cell }) => {
       const date = cell.getValue<FileListDTO['file_customer_deadline']>();
-      return date ? (
-        <div>{format(new Date(date), 'dd/MM/yyyy', { locale: es })}</div>
-      ) : (
-        <div>-</div>
-      );
+      return <div>{formatDate(date)}</div>;
     },
     size: 100
   },
@@ -138,7 +129,7 @@ export const columns: ColumnDef<FileListDTO>[] = [
     id: 'net_price',
     accessorKey: 'net_price',
     header: ({ column }: { column: Column<FileListDTO, unknown> }) => (
-      <DataTableColumnHeader column={column} title='Precio Compra' />
+      <DataTableColumnHeader column={column} title='P. Compra' />
     ),
     cell: ({ row }) => {
       const netPrice = row.original.net_price;
@@ -159,11 +150,7 @@ export const columns: ColumnDef<FileListDTO>[] = [
     ),
     cell: ({ cell }) => {
       const date = cell.getValue<FileListDTO['file_provider_deadline']>();
-      return date ? (
-        <div>{format(new Date(date), 'dd/MM/yyyy', { locale: es })}</div>
-      ) : (
-        <div>-</div>
-      );
+      return <div>{formatDate(date)}</div>;
     },
     size: 100
   },
@@ -180,6 +167,7 @@ export const columns: ColumnDef<FileListDTO>[] = [
         <div className='flex items-center gap-2'>
           <span className='font-medium'>{externalId}</span>
           {paymentInformed && <CheckCircle2 className='text-success h-4 w-4' />}
+          {!paymentInformed && <BotIcon className='text-error h-4 w-4' />}
         </div>
       );
     },

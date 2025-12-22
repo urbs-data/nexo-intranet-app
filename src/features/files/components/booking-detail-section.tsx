@@ -1,4 +1,5 @@
 import {
+  BotIcon,
   Calendar,
   CalendarCheck,
   CalendarX,
@@ -59,7 +60,7 @@ export function BookingDetailSection({
           <span className='ml-auto font-medium'>{formatDate(checkIn)}</span>
         </div>
         <div className='flex items-center gap-2'>
-          <CalendarX className='text-warning h-4 w-4 shrink-0' />
+          <BotIcon className='text-error h-4 w-4 shrink-0' />
           <span className='text-muted-foreground text-sm'>Autocancelación</span>
           <span className='ml-auto font-medium'>
             {formatDate(autocancelDate)}
@@ -78,7 +79,12 @@ export function BookingDetailSection({
           <CreditCard className='text-success h-4 w-4 shrink-0' />
           <span className='text-muted-foreground text-sm'>Pago informado</span>
           {paymentInformedDate && (
-            <CheckCircle2 className='text-success ml-auto h-4 w-4' />
+            <span className='ml-auto font-medium'>
+              {formatDate(paymentInformedDate)}
+            </span>
+          )}
+          {!paymentInformedDate && (
+            <span className='ml-auto font-medium'>No informado</span>
           )}
         </div>
         <div className='flex items-center gap-2'>
