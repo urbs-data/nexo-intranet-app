@@ -10,9 +10,6 @@ on:
       - main
       - development
 
-env:
-  GCP_PROJECT_ID: nexo-dev-465520
-  GCP_REGION: us-central1
 
 jobs:
   build-and-test:
@@ -69,11 +66,9 @@ jobs:
           - branch: main
             env_name: production
             service_name: nexo-intranet-app-prod
-            cloud_sql_instance: nexo-dev-465520:us-central1:nexo-intranet-prod
           - branch: development
             env_name: development
             service_name: nexo-intranet-app-dev
-            cloud_sql_instance: nexo-dev-465520:us-central1:nexo-intranet-dev
     environment: ${{ matrix.env_name }}
     continue-on-error: true
     
@@ -126,12 +121,12 @@ jobs:
       - name: Deploy to Cloud Run (${{ matrix.env_name }})
         run: |
           gcloud run deploy ${{ matrix.service_name }} \
-            --region=${{ env.GCP_REGION }} \
+            --region=${{ secrets.GCP_REGION }} \
             --source=. \
-            --service-account=intranet-service-account@nexo-dev-465520.iam.gserviceaccount.com \
+            --service-account=intranet-service-account@${{ vars.GCP_PROJECT_ID }}.iam.gserviceaccount.com \
             --allow-unauthenticated \
-            --add-cloudsql-instances=${{ matrix.cloud_sql_instance }} \
+            --add-cloudsql-instances=${{ secrets.CLOUD_SQL_INSTANCE }} \
             --set-build-env-vars="NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }},NEXT_PUBLIC_CLERK_SIGN_IN_URL=/auth/sign-in,NEXT_PUBLIC_CLERK_SIGN_UP_URL=/auth/sign-up,NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/dashboard/overview,NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/dashboard/overview" \
             --env-vars-file=cloudrun-env.yaml \
-            --project=${{ env.GCP_PROJECT_ID }}
+            --project=${{ vars.GCP_PROJECT_ID }}
 
