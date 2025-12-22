@@ -18,9 +18,8 @@ import { Heading } from '@/components/ui/heading';
 import { CustomerGeneralInfoSection } from './customer-general-info-section';
 import { CustomerContractSection } from './customer-contract-section';
 import { CustomerContractPreferencesSection } from './customer-contract-preferences-section';
-import { format } from 'date-fns/format';
-import { es } from 'date-fns/locale/es';
 import { PaymentRule } from '@/db/enums';
+import { formatDate } from '@/lib/format-date';
 
 export default function CustomerNewForm() {
   const form = useZodForm({
@@ -44,7 +43,7 @@ export default function CustomerNewForm() {
       can_book_with_overdraft: false,
       is_active: true,
       quickbooks_id: '-',
-      created_at: format(new Date(), 'yyyy-MM-dd', { locale: es }),
+      created_at: formatDate(new Date()),
       ended_at: '-'
     }
   });

@@ -5,8 +5,7 @@ import { CustomerWithCountry } from '../../data/get-customers';
 import { Column, ColumnDef } from '@tanstack/react-table';
 import { CheckCircle2, XCircle } from 'lucide-react';
 import { CellAction } from './cell-action';
-import { format } from 'date-fns';
-import { es } from 'date-fns/locale/es';
+import { formatDate } from '@/lib/format-date';
 
 export const columns: ColumnDef<CustomerWithCountry>[] = [
   {
@@ -64,11 +63,7 @@ export const columns: ColumnDef<CustomerWithCountry>[] = [
     ),
     cell: ({ cell }) => {
       const date = cell.getValue<CustomerWithCountry['created_at']>();
-      return date ? (
-        <div>{format(new Date(date), 'dd/MM/yyyy', { locale: es })}</div>
-      ) : (
-        <div>-</div>
-      );
+      return <div>{formatDate(date)}</div>;
     }
   },
   {

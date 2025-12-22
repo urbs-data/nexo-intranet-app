@@ -2,12 +2,11 @@
 import { DataTableColumnHeader } from '@/components/ui/table/data-table-column-header';
 import { BookingListDTO } from '../../data/get-bookings';
 import { Column, ColumnDef } from '@tanstack/react-table';
-import { format } from 'date-fns';
-import { es } from 'date-fns/locale/es';
 import { BookingStatus } from '@/db/enums';
 import { BookingStatusBadge } from '@/features/shared/components/booking-status-badge';
 import { formatCurrency } from '@/lib/format-currency';
 import Link from 'next/link';
+import { formatDate } from '@/lib/format-date';
 
 export const columns: ColumnDef<BookingListDTO>[] = [
   {
@@ -108,11 +107,7 @@ export const columns: ColumnDef<BookingListDTO>[] = [
     ),
     cell: ({ cell }) => {
       const date = cell.getValue<BookingListDTO['created_at']>();
-      return date ? (
-        <div>{format(new Date(date), 'yyyy-MM-dd HH:mm', { locale: es })}</div>
-      ) : (
-        <div>-</div>
-      );
+      return <div>{formatDate(date)}</div>;
     },
     size: 100
   },
@@ -124,11 +119,7 @@ export const columns: ColumnDef<BookingListDTO>[] = [
     ),
     cell: ({ cell }) => {
       const date = cell.getValue<BookingListDTO['check_in']>();
-      return date ? (
-        <div>{format(new Date(date), 'yyyy-MM-dd', { locale: es })}</div>
-      ) : (
-        <div>-</div>
-      );
+      return <div>{formatDate(date)}</div>;
     },
     size: 100
   },
@@ -140,11 +131,7 @@ export const columns: ColumnDef<BookingListDTO>[] = [
     ),
     cell: ({ cell }) => {
       const date = cell.getValue<BookingListDTO['autocancel_date']>();
-      return date ? (
-        <div>{format(new Date(date), 'dd/MM/yyyy', { locale: es })}</div>
-      ) : (
-        <div>-</div>
-      );
+      return <div>{formatDate(date)}</div>;
     },
     size: 100
   },
