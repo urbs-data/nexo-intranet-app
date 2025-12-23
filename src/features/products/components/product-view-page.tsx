@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import ProductViewForm from './product-view-form';
 import { getProductById } from '../data/get-product-by-id';
+import { resolveActionResult } from '@/lib/actions/client';
 
 type TProductViewPageProps = {
   productId: string;
@@ -9,7 +10,9 @@ type TProductViewPageProps = {
 export default async function ProductViewPage({
   productId
 }: TProductViewPageProps) {
-  const fetchedProduct = await getProductById({ id: Number(productId) });
+  const fetchedProduct = await resolveActionResult(
+    getProductById({ id: Number(productId) })
+  );
   if (!fetchedProduct) {
     notFound();
   }

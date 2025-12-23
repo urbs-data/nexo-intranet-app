@@ -2,7 +2,6 @@
 
 import { authActionClient } from '@/lib/actions/safe-action';
 import { deleteProductSchema } from './delete-product-schema';
-import db from '@/db';
 import { productsTable } from '@/db/schema';
 import { eq, and } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
@@ -12,7 +11,7 @@ export const deleteProduct = authActionClient
   .metadata({ actionName: 'deleteProduct' })
   .inputSchema(deleteProductSchema)
   .action(async ({ parsedInput, ctx }) => {
-    const result = await db
+    const result = await ctx.db
       .delete(productsTable)
       .where(
         and(

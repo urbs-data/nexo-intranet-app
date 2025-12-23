@@ -18,7 +18,7 @@ const editorConfig: InitialConfigType = {
   theme: editorTheme,
   nodes,
   onError: (error: Error) => {
-    console.error(error);
+    console.error(error); // eslint-disable-line no-console
   }
 };
 

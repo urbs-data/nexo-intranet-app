@@ -2,6 +2,7 @@ import { contractSearchParamsCache } from '@/features/contracts/searchparams';
 import { ContractTable } from './contract-tables';
 import { columns } from './contract-tables/columns';
 import { getContracts } from '../data/get-contracts';
+import { resolveActionResult } from '@/lib/actions/client';
 
 type ContractListPage = {};
 
@@ -30,7 +31,7 @@ export default async function ContractListPage({}: ContractListPage) {
     ...(sortDirection && { sortDirection })
   };
 
-  const data = await getContracts(filters);
+  const data = await resolveActionResult(getContracts(filters));
   const totalContracts = data.totalCount;
   const contracts = data.contracts;
 

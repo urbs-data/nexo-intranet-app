@@ -2,6 +2,7 @@ import { fileSearchParamsCache } from '@/features/files/searchparams';
 import { FileTable } from './file-tables';
 import { columns } from './file-tables/columns';
 import { getFiles } from '../data/get-files';
+import { resolveActionResult } from '@/lib/actions/client';
 
 type FileListPage = {};
 
@@ -20,7 +21,7 @@ export default async function FileListPage({}: FileListPage) {
     ...(sortDirection && { sortDirection })
   };
 
-  const data = await getFiles(filters);
+  const data = await resolveActionResult(getFiles(filters));
   const totalFiles = data.totalCount;
   const files = data.files;
 

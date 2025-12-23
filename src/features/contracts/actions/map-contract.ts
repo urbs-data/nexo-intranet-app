@@ -2,7 +2,6 @@
 
 import { authActionClient } from '@/lib/actions/safe-action';
 import { mapContractSchema } from './map-contract-schema';
-import db from '@/db';
 import { accountContractTable } from '@/db/schema';
 import { revalidatePath } from 'next/cache';
 import { eq, and, ne, isNull, sql } from 'drizzle-orm';
@@ -23,7 +22,7 @@ export const mapContract = authActionClient
       mapSameName
     } = parsedInput;
 
-    const [contract] = await db
+    const [contract] = await ctx.db
       .select()
       .from(accountContractTable)
       .where(eq(accountContractTable.id, contractId))
@@ -46,7 +45,7 @@ export const mapContract = authActionClient
       updateData.account_provider_id = providerInternalId;
     }
 
-    await db
+    await ctx.db
       .update(accountContractTable)
       .set(updateData)
       .where(eq(accountContractTable.id, contractId));
@@ -65,7 +64,7 @@ export const mapContract = authActionClient
           eq(accountContractTable.marketer_currency, customerCurrency)
         ];
 
-        const result = await db
+        const result = await ctx.db
           .update(accountContractTable)
           .set({
             account_customer_id: customerInternalId
@@ -85,7 +84,7 @@ export const mapContract = authActionClient
           ne(accountContractTable.id, contractId),
           eq(accountContractTable.provider_currency, providerCurrency)
         ];
-        const result = await db
+        const result = await ctx.db
           .update(accountContractTable)
           .set({
             account_provider_id: providerInternalId

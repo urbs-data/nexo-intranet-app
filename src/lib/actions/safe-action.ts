@@ -13,6 +13,7 @@ import {
   PreConditionError,
   ValidationError
 } from '@/lib/errors';
+import { getDb } from '@/db';
 
 export const actionClient = createSafeActionClient({
   handleServerError(e) {
@@ -25,7 +26,7 @@ export const actionClient = createSafeActionClient({
     ) {
       return e.message;
     } else if (process.env.NODE_ENV == 'development') {
-      console.log(e);
+      console.log(e); // eslint-disable-line no-console
       return e.name + ' -- ' + e.message;
     }
 
@@ -62,14 +63,14 @@ export const actionClientWithLogger = actionClient.use(
 
 export const authActionClient = actionClientWithLogger.use(async ({ next }) => {
   const ctx = await getAuthContext();
-
-  return next({ ctx });
+  const db = await getDb();
+  return next({ ctx: { ...ctx, db } });
 });
 
 export const authOrganizationActionClient = actionClientWithLogger.use(
   async ({ next }) => {
     const ctx = await getAuthOrganizationContext();
-
-    return next({ ctx });
+    const db = await getDb();
+    return next({ ctx: { ...ctx, db } });
   }
 );

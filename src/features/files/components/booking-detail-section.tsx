@@ -2,8 +2,6 @@ import {
   BotIcon,
   Calendar,
   CalendarCheck,
-  CalendarX,
-  CheckCircle2,
   CreditCard,
   Plus,
   RefreshCw,

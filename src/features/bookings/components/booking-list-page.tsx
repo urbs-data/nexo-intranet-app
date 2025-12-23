@@ -3,6 +3,7 @@ import { BookingTable } from './booking-tables';
 import { columns } from './booking-tables/columns';
 import { getBookings } from '../data/get-bookings';
 import { BookingStatus } from '@/db/enums';
+import { resolveActionResult } from '@/lib/actions/client';
 
 type BookingListPage = {};
 
@@ -25,7 +26,7 @@ export default async function BookingListPage({}: BookingListPage) {
     ...(status && { status: status as BookingStatus })
   };
 
-  const data = await getBookings(filters);
+  const data = await resolveActionResult(getBookings(filters));
   const totalBookings = data.totalCount;
   const bookings = data.bookings;
 

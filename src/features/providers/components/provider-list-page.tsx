@@ -2,6 +2,7 @@ import { providerSearchParamsCache } from '@/features/providers/searchparams';
 import { ProviderTable } from './provider-tables';
 import { columns } from './provider-tables/columns';
 import { getProviders } from '../data/get-providers';
+import { resolveActionResult } from '@/lib/actions/client';
 
 type ProviderListPage = {};
 
@@ -24,7 +25,7 @@ export default async function ProviderListPage({}: ProviderListPage) {
     ...(sortDirection && { sortDirection })
   };
 
-  const data = await getProviders(filters);
+  const data = await resolveActionResult(getProviders(filters));
   const totalProviders = data.totalCount;
   const providers = data.providers;
 

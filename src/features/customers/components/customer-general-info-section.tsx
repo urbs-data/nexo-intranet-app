@@ -10,6 +10,7 @@ import { IconEdit } from '@tabler/icons-react';
 import { FormCombobox } from '@/components/forms/form-combobox';
 import { useQuery } from '@tanstack/react-query';
 import { getCountries } from '@/features/shared/data/get-countries';
+import { resolveActionResult } from '@/lib/actions/client';
 
 interface CustomerGeneralInfoSectionProps {
   control: Control<any>;
@@ -29,7 +30,7 @@ export function CustomerGeneralInfoSection({
   const { data: countries = [], isLoading: isLoadingCountries } = useQuery({
     queryKey: ['countries'],
     queryFn: () =>
-      getCountries().then((countries) =>
+      resolveActionResult(getCountries()).then((countries) =>
         countries.map((country) => ({
           value: country.id,
           label: country.label

@@ -1,6 +1,6 @@
 'use server';
 
-import db from '@/db';
+import { getDb } from '@/db';
 import { productsTable } from '@/db/schema';
 import { getProductsSchema, GetProductsSchema } from './get-products-schema';
 import { Product } from '@/db/schema';
@@ -71,6 +71,7 @@ export async function getProducts(input: GetProductsSchema): Promise<{
     }
   }
 
+  const db = await getDb();
   let query;
   if (parsedInput.columns && parsedInput.columns.length > 0) {
     const selectColumns: Record<string, any> = { id: productsTable.id };

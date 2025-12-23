@@ -2,12 +2,12 @@
 
 import { authActionClient } from '@/lib/actions/safe-action';
 import { addProductSchema } from './add-product-schema';
-import db from '@/db';
 import { productsTable } from '@/db/schema';
 import { revalidatePath } from 'next/cache';
 import { createProductData } from '../lib/product-factory';
 import { ValidationError } from '@/lib/errors';
 import { and, eq } from 'drizzle-orm';
+
 export const addProduct = authActionClient
   .metadata({ actionName: 'addProduct' })
   .inputSchema(addProductSchema)
@@ -22,7 +22,7 @@ export const addProduct = authActionClient
       ctx.session.user.id
     );
 
-    const existingProduct = await db
+    const existingProduct = await ctx.db
       .select()
       .from(productsTable)
       .where(
@@ -35,7 +35,7 @@ export const addProduct = authActionClient
       throw new ValidationError('Product already exists');
     }
 
-    await db.insert(productsTable).values(productData);
+    await ctx.db.insert(productsTable).values(productData);
 
     revalidatePath('/dashboard/product');
     return { message: 'Add product successful' };

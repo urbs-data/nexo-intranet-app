@@ -10,9 +10,9 @@ import {
 import { Button } from '@/components/ui/button';
 import { AccountAutocomplete } from './account-autocomplete';
 import { getCustomerAccounts, getProviderAccounts } from '../data/get-accounts';
+import { resolveActionResult } from '@/lib/actions/client';
 import { ContractWithAccounts } from '../data/get-contracts';
 import { useMutation } from '@tanstack/react-query';
-import { resolveActionResult } from '@/lib/actions/client';
 import { mapContract } from '../actions/map-contract';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
@@ -104,7 +104,9 @@ export function ContractMapModal({
             value={customerInternalId}
             accountType={AccountType.CUSTOMER}
             onValueChange={setCustomerInternalId}
-            fetchAccounts={getCustomerAccounts}
+            fetchAccounts={(search, currency) =>
+              resolveActionResult(getCustomerAccounts({ search, currency }))
+            }
             currency={contract.marketer_currency ?? undefined}
             placeholder='Seleccionar Cliente Interno'
             className='w-full'
@@ -120,7 +122,9 @@ export function ContractMapModal({
             value={providerInternalId}
             accountType={AccountType.PROVIDER}
             onValueChange={setProviderInternalId}
-            fetchAccounts={getProviderAccounts}
+            fetchAccounts={(search, currency) =>
+              resolveActionResult(getProviderAccounts({ search, currency }))
+            }
             currency={contract.provider_currency ?? undefined}
             placeholder='Seleccionar Proveedor Interno'
             className='w-full'

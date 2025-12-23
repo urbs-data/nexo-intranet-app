@@ -2,7 +2,6 @@
 
 import { authActionClient } from '@/lib/actions/safe-action';
 import { bulkAddProductsSchema } from './bulk-add-products-schema';
-import db from '@/db';
 import { productsTable } from '@/db/schema';
 import * as XLSX from 'xlsx';
 import { sql } from 'drizzle-orm';
@@ -38,7 +37,7 @@ export const bulkAddProducts = authActionClient
 
     const productsToInsert = createManyProductData(data, ctx.session.user.id);
 
-    const result = await db
+    const result = await ctx.db
       .insert(productsTable)
       .values(productsToInsert)
       .onConflictDoUpdate({

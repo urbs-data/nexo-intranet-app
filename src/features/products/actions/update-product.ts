@@ -2,7 +2,6 @@
 
 import { authActionClient } from '@/lib/actions/safe-action';
 import { updateProductSchema } from './update-product-schema';
-import db from '@/db';
 import { productsTable } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 import { generatePhotoUrl } from '../lib/products';
@@ -11,7 +10,7 @@ import { revalidatePath } from 'next/cache';
 export const updateProduct = authActionClient
   .metadata({ actionName: 'updateProduct' })
   .inputSchema(updateProductSchema)
-  .action(async ({ parsedInput }) => {
+  .action(async ({ parsedInput, ctx }) => {
     const now = new Date();
 
     let photo_url: string | undefined;
@@ -31,7 +30,7 @@ export const updateProduct = authActionClient
       updateData.photo_url = photo_url;
     }
 
-    await db
+    await ctx.db
       .update(productsTable)
       .set(updateData)
       .where(eq(productsTable.id, parsedInput.id));

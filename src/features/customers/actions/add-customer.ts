@@ -2,7 +2,6 @@
 
 import { authActionClient } from '@/lib/actions/safe-action';
 import { addCustomerSchema } from './add-customer-schema';
-import db from '@/db';
 import { accountTable } from '@/db/schema';
 import { revalidatePath } from 'next/cache';
 import { ValidationError } from '@/lib/errors';
@@ -15,7 +14,7 @@ import { publishMessage } from '@/messaging/client';
 export const addCustomer = authActionClient
   .metadata({ actionName: 'addCustomer' })
   .inputSchema(addCustomerSchema)
-  .action(async ({ parsedInput }) => {
+  .action(async ({ parsedInput, ctx }) => {
     const accountData = {
       id: uuidv7(),
       name: parsedInput.name,
@@ -42,7 +41,7 @@ export const addCustomer = authActionClient
       updated_at: new Date()
     };
 
-    const existingAccount = await db
+    const existingAccount = await ctx.db
       .select()
       .from(accountTable)
       .where(
@@ -57,7 +56,7 @@ export const addCustomer = authActionClient
       throw new ValidationError('Ya existe un cliente con ese nombre');
     }
 
-    const [account] = await db
+    const [account] = await ctx.db
       .insert(accountTable)
       .values(accountData)
       .returning();

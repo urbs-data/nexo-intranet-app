@@ -2,7 +2,6 @@
 
 import { authActionClient } from '@/lib/actions/safe-action';
 import { updateCustomerSchema } from './update-customer-schema';
-import db from '@/db';
 import { accountTable } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
@@ -12,7 +11,7 @@ import { publishMessage } from '@/messaging/client';
 export const updateCustomer = authActionClient
   .metadata({ actionName: 'updateCustomer' })
   .inputSchema(updateCustomerSchema)
-  .action(async ({ parsedInput }) => {
+  .action(async ({ parsedInput, ctx }) => {
     const now = new Date();
 
     const updateData: any = {
@@ -37,7 +36,7 @@ export const updateCustomer = authActionClient
       updated_at: now
     };
 
-    const [account] = await db
+    const [account] = await ctx.db
       .update(accountTable)
       .set(updateData)
       .where(eq(accountTable.id, parsedInput.id))

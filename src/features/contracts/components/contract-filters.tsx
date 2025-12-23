@@ -9,6 +9,7 @@ import { X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { AccountAutocomplete } from './account-autocomplete';
 import { getCustomerAccounts, getProviderAccounts } from '../data/get-accounts';
+import { resolveActionResult } from '@/lib/actions/client';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { AccountType } from '@/db/enums';
@@ -136,7 +137,9 @@ export function ContractFilters() {
             setCustomerInternal(value);
             handleFilterChange();
           }}
-          fetchAccounts={getCustomerAccounts}
+          fetchAccounts={(search, currency) =>
+            resolveActionResult(getCustomerAccounts({ search, currency }))
+          }
           accountType={AccountType.CUSTOMER}
           placeholder='Cliente Interno'
           className='h-9 w-full md:w-[200px]'
@@ -155,7 +158,9 @@ export function ContractFilters() {
             setProviderInternal(value);
             handleFilterChange();
           }}
-          fetchAccounts={getProviderAccounts}
+          fetchAccounts={(search, currency) =>
+            resolveActionResult(getProviderAccounts({ search, currency }))
+          }
           accountType={AccountType.PROVIDER}
           placeholder='Proveedor Interno'
           className='h-9 w-full md:w-[200px]'

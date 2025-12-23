@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import ContractViewForm from './contract-view-form';
 import { getContractById } from '../data/get-contract-by-id';
+import { resolveActionResult } from '@/lib/actions/client';
 
 type TContractViewPageProps = {
   contractId: string;
@@ -9,7 +10,9 @@ type TContractViewPageProps = {
 export default async function ContractViewPage({
   contractId
 }: TContractViewPageProps) {
-  const fetchedContract = await getContractById({ id: contractId });
+  const fetchedContract = await resolveActionResult(
+    getContractById({ id: contractId })
+  );
   if (!fetchedContract) {
     notFound();
   }

@@ -12,13 +12,14 @@ import { Label } from '@/components/ui/label';
 import { getCountries } from '@/features/shared/data/get-countries';
 import { useQuery } from '@tanstack/react-query';
 import { FilterSelect } from '@/components/ui/filter-select';
+import { resolveActionResult } from '@/lib/actions/client';
 
 export function CustomerFilters() {
   const { startTransition } = useTransitionContext();
 
   const { data: countries = [], isLoading: isLoadingCountries } = useQuery({
     queryKey: ['countries'],
-    queryFn: () => getCountries()
+    queryFn: () => resolveActionResult(getCountries())
   });
 
   const [search, setSearch] = useDebouncedQueryState(

@@ -1,7 +1,6 @@
 'use client';
 
 import { DataTable } from '@/components/ui/table/data-table';
-import { FileTableActions } from './table-actions';
 
 import { useDataTable } from '@/hooks/use-data-table';
 
@@ -33,11 +32,6 @@ export function FileTable<TValue>({
   });
 
   return (
-    <DataTable
-      table={table}
-      totalItems={totalItems}
-      showViewOptions={false}
-      tableActions={<FileTableActions table={table} totalItems={totalItems} />}
-    />
+    <DataTable table={table} totalItems={totalItems} showViewOptions={false} />
   );
 }

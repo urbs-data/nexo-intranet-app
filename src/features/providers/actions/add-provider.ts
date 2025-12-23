@@ -2,7 +2,6 @@
 
 import { authActionClient } from '@/lib/actions/safe-action';
 import { addProviderSchema } from './add-provider-schema';
-import db from '@/db';
 import { accountTable } from '@/db/schema';
 import { revalidatePath } from 'next/cache';
 import { ValidationError } from '@/lib/errors';
@@ -15,7 +14,7 @@ import { EVENTS } from '@/messaging/events';
 export const addProvider = authActionClient
   .metadata({ actionName: 'addProvider' })
   .inputSchema(addProviderSchema)
-  .action(async ({ parsedInput }) => {
+  .action(async ({ parsedInput, ctx }) => {
     const accountData = {
       id: uuidv7(),
       name: parsedInput.name,
@@ -38,7 +37,7 @@ export const addProvider = authActionClient
       updated_at: new Date()
     };
 
-    const existingAccount = await db
+    const existingAccount = await ctx.db
       .select()
       .from(accountTable)
       .where(
@@ -53,7 +52,7 @@ export const addProvider = authActionClient
       throw new ValidationError('Ya existe un proveedor con ese nombre');
     }
 
-    const [account] = await db
+    const [account] = await ctx.db
       .insert(accountTable)
       .values(accountData)
       .returning();

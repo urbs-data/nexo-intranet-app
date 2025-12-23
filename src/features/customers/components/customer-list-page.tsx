@@ -2,6 +2,7 @@ import { customerSearchParamsCache } from '@/features/customers/searchparams';
 import { CustomerTable } from './customer-tables';
 import { columns } from './customer-tables/columns';
 import { getCustomers } from '../data/get-customers';
+import { resolveActionResult } from '@/lib/actions/client';
 
 type CustomerListPage = {};
 
@@ -24,7 +25,7 @@ export default async function CustomerListPage({}: CustomerListPage) {
     ...(sortDirection && { sortDirection })
   };
 
-  const data = await getCustomers(filters);
+  const data = await resolveActionResult(getCustomers(filters));
   const totalCustomers = data.totalCount;
   const customers = data.customers;
 

@@ -1,79 +1,91 @@
 'use server';
 
-import db from '@/db';
 import { accountTable } from '@/db/schema';
 import { like, and, eq, sql } from 'drizzle-orm';
 import { AccountType } from '@/db/enums';
+import { authActionClient } from '@/lib/actions/safe-action';
+import { z } from 'zod';
 
 export interface AccountOption {
   id: string;
   label: string;
 }
 
-export async function getCustomerAccounts(
-  search?: string,
-  currency?: string
-): Promise<AccountOption[]> {
-  const conditions = [
-    eq(accountTable.account_type, AccountType.CUSTOMER),
-    eq(accountTable.is_active, true)
-  ];
+const getAccountsSchema = z.object({
+  search: z.string().optional(),
+  currency: z.string().optional()
+});
 
-  if (search) {
-    conditions.push(
-      like(sql`lower(${accountTable.name})`, `%${search.toLowerCase()}%`)
-    );
-  }
+export const getCustomerAccounts = authActionClient
+  .metadata({ actionName: 'getCustomerAccounts' })
+  .inputSchema(getAccountsSchema)
+  .action(async ({ parsedInput, ctx }) => {
+    const conditions = [
+      eq(accountTable.account_type, AccountType.CUSTOMER),
+      eq(accountTable.is_active, true)
+    ];
 
-  if (currency) {
-    conditions.push(eq(accountTable.currency, currency));
-  }
+    if (parsedInput.search) {
+      conditions.push(
+        like(
+          sql`lower(${accountTable.name})`,
+          `%${parsedInput.search.toLowerCase()}%`
+        )
+      );
+    }
 
-  const accounts = await db
-    .select({
-      id: accountTable.id,
-      name: accountTable.name
-    })
-    .from(accountTable)
-    .where(and(...conditions))
-    .limit(50);
+    if (parsedInput.currency) {
+      conditions.push(eq(accountTable.currency, parsedInput.currency));
+    }
 
-  return accounts.map((account) => ({
-    id: account.id,
-    label: account.name
-  }));
-}
+    const accounts = await ctx.db
+      .select({
+        id: accountTable.id,
+        name: accountTable.name
+      })
+      .from(accountTable)
+      .where(and(...conditions))
+      .limit(50);
 
-export async function getProviderAccounts(
-  search?: string,
-  currency?: string
-): Promise<AccountOption[]> {
-  const conditions = [
-    eq(accountTable.account_type, AccountType.PROVIDER),
-    eq(accountTable.is_active, true)
-  ];
+    return accounts.map((account) => ({
+      id: account.id,
+      label: account.name
+    }));
+  });
 
-  if (search) {
-    conditions.push(
-      like(sql`lower(${accountTable.name})`, `%${search.toLowerCase()}%`)
-    );
-  }
+export const getProviderAccounts = authActionClient
+  .metadata({ actionName: 'getProviderAccounts' })
+  .inputSchema(getAccountsSchema)
+  .action(async ({ parsedInput, ctx }) => {
+    const conditions = [
+      eq(accountTable.account_type, AccountType.PROVIDER),
+      eq(accountTable.is_active, true)
+    ];
 
-  if (currency) {
-    conditions.push(eq(accountTable.currency, currency));
-  }
+    if (parsedInput.search) {
+      conditions.push(
+        like(
+          sql`lower(${accountTable.name})`,
+          `%${parsedInput.search.toLowerCase()}%`
+        )
+      );
+    }
 
-  const accounts = await db
-    .select({
-      id: accountTable.id,
-      name: accountTable.name
-    })
-    .from(accountTable)
-    .where(and(...conditions))
-    .limit(50);
+    if (parsedInput.currency) {
+      conditions.push(eq(accountTable.currency, parsedInput.currency));
+    }
 
-  return accounts.map((account) => ({
-    id: account.id,
-    label: account.name
-  }));
-}
+    const accounts = await ctx.db
+      .select({
+        id: accountTable.id,
+        name: accountTable.name
+      })
+      .from(accountTable)
+      .where(and(...conditions))
+      .limit(50);
+
+    return accounts.map((account) => ({
+      id: account.id,
+      label: account.name
+    }));
+  });

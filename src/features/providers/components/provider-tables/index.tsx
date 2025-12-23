@@ -1,7 +1,6 @@
 'use client';
 
 import { DataTable } from '@/components/ui/table/data-table';
-import { ProviderTableActions } from './table-actions';
 
 import { useDataTable } from '@/hooks/use-data-table';
 
@@ -33,13 +32,6 @@ export function ProviderTable<TValue>({
   });
 
   return (
-    <DataTable
-      table={table}
-      totalItems={totalItems}
-      showViewOptions={false}
-      tableActions={
-        <ProviderTableActions table={table} totalItems={totalItems} />
-      }
-    />
+    <DataTable table={table} totalItems={totalItems} showViewOptions={false} />
   );
 }
