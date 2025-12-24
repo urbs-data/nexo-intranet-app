@@ -4,7 +4,7 @@ export const getFileCustomerStatusLabel = (
   status: FileCustomerStatus
 ): string => {
   const statusMap: Record<FileCustomerStatus, string> = {
-    [FileCustomerStatus.TO_ACCOUNT]: 'A Cuenta',
+    [FileCustomerStatus.TO_ACCOUNT]: 'A contabilizar',
     [FileCustomerStatus.CANCELLED]: 'Cancelado',
     [FileCustomerStatus.AMOUNT_CHARGED]: 'Monto Cobrado',
     [FileCustomerStatus.END]: 'Finalizado',
