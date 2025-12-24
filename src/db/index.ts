@@ -16,14 +16,6 @@ let dbInstance: ReturnType<typeof drizzle> | null = null;
 let initPromise: Promise<ReturnType<typeof drizzle>> | null = null;
 
 async function getDb(): Promise<ReturnType<typeof drizzle>> {
-  logger('[DB] getDb called', {
-    hasDbInstance: !!dbInstance,
-    hasInitPromise: !!initPromise,
-    isLocalhost,
-    nodeEnv: process.env.NODE_ENV,
-    useLocalDb: process.env.USE_LOCAL_DB
-  });
-
   if (dbInstance) {
     return dbInstance;
   }

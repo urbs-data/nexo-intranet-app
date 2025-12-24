@@ -183,7 +183,7 @@ export function ContractFilters() {
             htmlFor='unmapped'
             className='cursor-pointer text-sm font-normal whitespace-nowrap'
           >
-            Sin mapear?
+            Sin mapear
           </Label>
         </div>
 
