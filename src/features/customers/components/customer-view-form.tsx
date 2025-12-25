@@ -16,9 +16,7 @@ import { UpdateCustomerSchema } from '../actions/update-customer-schema';
 import { toast } from 'sonner';
 import { useZodForm } from '@/hooks/use-zod-form';
 import { useState } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
-import { Heading } from '@/components/ui/heading';
 import { CustomerGeneralInfoSection } from './customer-general-info-section';
 import { CustomerContractSection } from './customer-contract-section';
 import { CustomerContractPreferencesSection } from './customer-contract-preferences-section';
@@ -26,11 +24,9 @@ import { formatDate } from '@/lib/format-date';
 import { PaymentRule } from '@/db/enums';
 
 export default function CustomerViewForm({
-  initialData,
-  pageTitle
+  initialData
 }: {
   initialData: CustomerDTO;
-  pageTitle: string;
 }) {
   const [isEditMode, setIsEditMode] = useState(false);
 
@@ -92,86 +88,65 @@ export default function CustomerViewForm({
     }
   };
 
+  if (isEditMode) {
+    return (
+      <Form
+        form={form}
+        onSubmit={form.handleSubmit(onSubmit)}
+        className='space-y-8'
+      >
+        <CustomerGeneralInfoSection
+          control={form.control}
+          isEditMode={isEditMode}
+          mode='edit'
+        />
+        <Separator />
+        <CustomerContractSection control={form.control} mode='edit' />
+        <Separator />
+        <CustomerContractPreferencesSection
+          control={form.control}
+          mode='edit'
+        />
+
+        <div className='flex gap-4'>
+          <Button type='submit' disabled={isPending}>
+            {isPending ? 'Actualizando Cliente...' : 'Actualizar Cliente'}
+          </Button>
+          <Button
+            type='button'
+            variant='outline'
+            onClick={() => {
+              setIsEditMode(false);
+              form.reset();
+            }}
+            disabled={isPending}
+          >
+            Cancelar
+          </Button>
+        </div>
+      </Form>
+    );
+  }
+
   return (
-    <div className='flex flex-1 flex-col space-y-4'>
-      <Heading title={pageTitle} />
+    <Form
+      form={form}
+      onSubmit={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      }}
+      className='space-y-4'
+    >
+      <CustomerGeneralInfoSection
+        control={form.control}
+        isEditMode={isEditMode}
+        onEditClick={() => setIsEditMode(true)}
+        mode='view'
+      />
       <Separator />
-
-      <Tabs defaultValue='info' className='w-full'>
-        <TabsList>
-          <TabsTrigger value='info'>Información</TabsTrigger>
-          <TabsTrigger value='contracts'>Contratos</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value='info' className='mt-6'>
-          {isEditMode ? (
-            <Form
-              form={form}
-              onSubmit={form.handleSubmit(onSubmit)}
-              className='space-y-8'
-            >
-              <CustomerGeneralInfoSection
-                control={form.control}
-                isEditMode={isEditMode}
-                mode='edit'
-              />
-              <Separator />
-              <CustomerContractSection control={form.control} mode='edit' />
-              <Separator />
-              <CustomerContractPreferencesSection
-                control={form.control}
-                mode='edit'
-              />
-
-              <div className='flex gap-4'>
-                <Button type='submit' disabled={isPending}>
-                  {isPending ? 'Actualizando Cliente...' : 'Actualizar Cliente'}
-                </Button>
-                <Button
-                  type='button'
-                  variant='outline'
-                  onClick={() => {
-                    setIsEditMode(false);
-                    form.reset();
-                  }}
-                  disabled={isPending}
-                >
-                  Cancelar
-                </Button>
-              </div>
-            </Form>
-          ) : (
-            <Form
-              form={form}
-              onSubmit={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-              }}
-              className='space-y-8'
-            >
-              <CustomerGeneralInfoSection
-                control={form.control}
-                isEditMode={isEditMode}
-                onEditClick={() => setIsEditMode(true)}
-                mode='view'
-              />
-              <Separator />
-              <CustomerContractSection control={form.control} mode='view' />
-              <Separator />
-              <CustomerContractPreferencesSection
-                control={form.control}
-                mode='view'
-              />
-            </Form>
-          )}
-        </TabsContent>
-
-        <TabsContent value='contracts' className='mt-6'>
-          <div className='text-muted-foreground py-8 text-center'>
-            <p>El listado de contratos se implementará próximamente.</p>
-          </div>
-        </TabsContent>
-      </Tabs>
-    </div>
+      <CustomerContractSection control={form.control} mode='view' />
+      <Separator />
+      <CustomerContractPreferencesSection control={form.control} mode='view' />
+    </Form>
   );
 }

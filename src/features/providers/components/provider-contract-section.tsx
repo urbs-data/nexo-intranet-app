@@ -5,6 +5,7 @@ import { FormSelect } from '@/components/forms/form-select';
 import { FormTextarea } from '@/components/forms/form-textarea';
 import { Control } from 'react-hook-form';
 import { PAYMENT_RULES, CURRENCIES } from '@/features/shared/data/constants';
+import { Heading } from '@/components/ui/heading';
 
 interface ProviderContractSectionProps {
   control: Control<any>;
@@ -19,7 +20,7 @@ export function ProviderContractSection({
 
   return (
     <div className='space-y-4'>
-      <h3 className='text-lg font-semibold'>Contrato</h3>
+      <Heading title='Contrato' size='md' />
       <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
         <FormInput
           control={control}

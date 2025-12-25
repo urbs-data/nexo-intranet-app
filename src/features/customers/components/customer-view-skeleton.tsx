@@ -4,71 +4,55 @@ import { Heading } from '@/components/ui/heading';
 
 export default function CustomerViewSkeleton() {
   return (
-    <div className='flex flex-1 flex-col space-y-4'>
-      <Heading title='Ver Cliente' />
+    <div className='space-y-4'>
+      {/* Información General Section */}
+      <div className='space-y-6'>
+        <div className='flex items-center justify-between'>
+          <Heading title='Información General' size='md' />
+          <Skeleton className='h-8 w-24' />
+        </div>
+        <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4'>
+          <Skeleton className='h-10 w-full md:col-span-2' />
+          <Skeleton className='h-10 w-full' />
+          <Skeleton className='h-10 w-full' />
+          <Skeleton className='h-10 w-full md:col-span-2' />
+          <Skeleton className='h-10 w-full md:col-span-2' />
+          <Skeleton className='h-10 w-full' />
+          <Skeleton className='h-10 w-full' />
+          <Skeleton className='h-10 w-full' />
+          <Skeleton className='h-10 w-full' />
+        </div>
+      </div>
+
       <Separator />
 
-      <div className='w-full'>
-        <div className='bg-muted text-muted-foreground inline-flex h-9 w-fit items-center justify-center gap-2 rounded-lg p-[3px]'>
-          <Skeleton className='h-[calc(100%-1px)] w-28 rounded-md' />
-          <Skeleton className='h-[calc(100%-1px)] w-28 rounded-md' />
+      {/* Contrato Section */}
+      <div className='space-y-4'>
+        <h3 className='text-lg font-semibold'>Contrato</h3>
+        <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
+          <Skeleton className='h-10 w-full' />
+          <Skeleton className='h-10 w-full' />
+          <Skeleton className='h-10 w-full' />
+          <Skeleton className='h-10 w-full' />
+          <Skeleton className='h-10 w-full' />
+          <Skeleton className='h-10 w-full' />
         </div>
+        <Skeleton className='h-24 w-full' />
+      </div>
 
-        <div className='mt-6'>
-          <div className='space-y-8'>
-            {/* Información General Section */}
-            <div className='space-y-6'>
-              <div className='flex items-center justify-between'>
-                <h3 className='text-lg font-semibold'>Información General</h3>
-                <Skeleton className='h-9 w-24' />
-              </div>
-              <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4'>
-                <Skeleton className='h-10 w-full md:col-span-2' />
-                <Skeleton className='h-10 w-full' />
-                <Skeleton className='h-10 w-full' />
-                <Skeleton className='h-10 w-full md:col-span-2' />
-                <Skeleton className='h-10 w-full md:col-span-2' />
-                <Skeleton className='h-10 w-full' />
-                <Skeleton className='h-10 w-full' />
-                <Skeleton className='h-10 w-full' />
-                <Skeleton className='h-10 w-full' />
-              </div>
-            </div>
+      <Separator />
 
-            <Separator />
-
-            {/* Contrato Section */}
-            <div className='space-y-4'>
-              <h3 className='text-lg font-semibold'>Contrato</h3>
-              <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
-                <Skeleton className='h-10 w-full' />
-                <Skeleton className='h-10 w-full' />
-                <Skeleton className='h-10 w-full' />
-                <Skeleton className='h-10 w-full' />
-                <Skeleton className='h-10 w-full' />
-                <Skeleton className='h-10 w-full' />
-              </div>
-              <Skeleton className='h-24 w-full' />
-            </div>
-
-            <Separator />
-
-            {/* Preferencias del Contrato Section */}
-            <div className='space-y-4'>
-              <h3 className='text-lg font-semibold'>
-                Preferencias del Contrato
-              </h3>
-              <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
-                <Skeleton className='h-10 w-full' />
-                <Skeleton className='h-10 w-full' />
-                <Skeleton className='h-10 w-full' />
-              </div>
-              <div className='space-y-4'>
-                <Skeleton className='h-6 w-full' />
-                <Skeleton className='h-6 w-full' />
-              </div>
-            </div>
-          </div>
+      {/* Preferencias del Contrato Section */}
+      <div className='space-y-4'>
+        <h3 className='text-lg font-semibold'>Preferencias del Contrato</h3>
+        <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
+          <Skeleton className='h-10 w-full' />
+          <Skeleton className='h-10 w-full' />
+          <Skeleton className='h-10 w-full' />
+        </div>
+        <div className='space-y-4'>
+          <Skeleton className='h-6 w-full' />
+          <Skeleton className='h-6 w-full' />
         </div>
       </div>
     </div>

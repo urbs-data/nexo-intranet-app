@@ -1,3 +1,5 @@
+'use client';
+
 import { Skeleton } from '@/components/ui/skeleton';
 import {
   Table,
@@ -8,11 +10,20 @@ import {
   TableRow
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
+import {
+  type ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  useReactTable
+} from '@tanstack/react-table';
+import { getCommonPinningStyles } from '@/lib/data-table';
+import { DataTablePagination } from './data-table-pagination';
 
-interface DataTableSkeletonProps extends React.ComponentProps<'div'> {
-  columnCount: number;
+interface DataTableSkeletonProps<TData = unknown>
+  extends React.ComponentProps<'div'> {
+  columnCount?: number;
+  columns?: ColumnDef<TData>[];
   rowCount?: number;
-  filterCount?: number;
   cellWidths?: string[];
   withViewOptions?: boolean;
   withTableActions?: boolean;
@@ -20,10 +31,10 @@ interface DataTableSkeletonProps extends React.ComponentProps<'div'> {
   shrinkZero?: boolean;
 }
 
-export function DataTableSkeleton({
+export function DataTableSkeleton<TData = unknown>({
   columnCount,
+  columns,
   rowCount = 10,
-  filterCount = 0,
   cellWidths = ['auto'],
   withViewOptions = false,
   withTableActions = false,
@@ -31,11 +42,26 @@ export function DataTableSkeleton({
   shrinkZero = false,
   className,
   ...props
-}: DataTableSkeletonProps) {
+}: DataTableSkeletonProps<TData>) {
+  const table = useReactTable<TData>({
+    data: [] as TData[],
+    columns: columns ?? [],
+    getCoreRowModel: getCoreRowModel(),
+    manualPagination: true
+  });
+
+  const hasColumns = !!columns;
+
+  const effectiveColumnCount = hasColumns
+    ? table.getAllColumns().length
+    : (columnCount ?? 0);
+
   const cozyCellWidths = Array.from(
-    { length: columnCount },
+    { length: effectiveColumnCount },
     (_, index) => cellWidths[index % cellWidths.length] ?? 'auto'
   );
+
+  const headerGroups = hasColumns ? table.getHeaderGroups() : null;
 
   return (
     <div
@@ -48,63 +74,123 @@ export function DataTableSkeleton({
           {withViewOptions && <Skeleton className='h-8 w-24' />}
         </div>
       )}
-      <div className='flex-1 rounded-md border'>
-        <Table>
-          <TableHeader>
-            {Array.from({ length: 1 }).map((_, i) => (
-              <TableRow key={i} className='hover:bg-transparent'>
-                {Array.from({ length: columnCount }).map((_, j) => (
-                  <TableHead
-                    key={j}
-                    style={{
-                      width: cozyCellWidths[j],
-                      minWidth: shrinkZero ? cozyCellWidths[j] : 'auto'
-                    }}
+      {hasColumns ? (
+        <div className='relative flex flex-1'>
+          <div className='absolute inset-0 overflow-x-auto overflow-y-auto rounded-lg border'>
+            <table
+              className='w-full caption-bottom text-sm'
+              style={{ minWidth: 'max-content' }}
+            >
+              <TableHeader className='bg-background sticky top-0 z-10'>
+                {headerGroups?.map((headerGroup) => (
+                  <TableRow
+                    key={headerGroup.id}
+                    className='bg-muted hover:bg-muted border-b'
                   >
-                    <Skeleton className='h-6 w-full' />
-                  </TableHead>
+                    {headerGroup.headers.map((header) => (
+                      <TableHead
+                        key={header.id}
+                        colSpan={header.colSpan}
+                        className='bg-muted'
+                        style={{
+                          ...getCommonPinningStyles({ column: header.column })
+                        }}
+                      >
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </TableHead>
+                    ))}
+                  </TableRow>
                 ))}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {Array.from({ length: rowCount }).map((_, i) => (
-              <TableRow key={i} className='hover:bg-transparent'>
-                {Array.from({ length: columnCount }).map((_, j) => (
-                  <TableCell
-                    key={j}
-                    style={{
-                      width: cozyCellWidths[j],
-                      minWidth: shrinkZero ? cozyCellWidths[j] : 'auto'
-                    }}
-                  >
-                    <Skeleton className='h-6 w-full' />
-                  </TableCell>
+              </TableHeader>
+              <TableBody>
+                {Array.from({ length: rowCount }).map((_, i) => (
+                  <TableRow key={i} className='hover:bg-transparent'>
+                    {headerGroups?.[0]?.headers.map((header) => (
+                      <TableCell
+                        key={header.id}
+                        style={{
+                          ...getCommonPinningStyles({ column: header.column })
+                        }}
+                      >
+                        <Skeleton className='h-6 w-full' />
+                      </TableCell>
+                    ))}
+                  </TableRow>
                 ))}
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
-      {withPagination ? (
-        <div className='flex w-full items-center justify-between gap-4 overflow-auto p-1 sm:gap-8'>
-          <Skeleton className='h-7 w-40 shrink-0' />
-          <div className='flex items-center gap-4 sm:gap-6 lg:gap-8'>
-            <div className='flex items-center gap-2'>
-              <Skeleton className='h-7 w-24' />
-              <Skeleton className='h-7 w-[4.5rem]' />
-            </div>
-            <div className='flex items-center justify-center text-sm font-medium'>
-              <Skeleton className='h-7 w-20' />
-            </div>
-            <div className='flex items-center gap-2'>
-              <Skeleton className='hidden size-7 lg:block' />
-              <Skeleton className='size-7' />
-              <Skeleton className='size-7' />
-              <Skeleton className='hidden size-7 lg:block' />
-            </div>
+              </TableBody>
+            </table>
           </div>
         </div>
+      ) : (
+        <div className='flex-1 rounded-md border'>
+          <Table>
+            <TableHeader>
+              {Array.from({ length: 1 }).map((_, i) => (
+                <TableRow key={i} className='hover:bg-transparent'>
+                  {Array.from({ length: effectiveColumnCount }).map((_, j) => (
+                    <TableHead
+                      key={j}
+                      style={{
+                        width: cozyCellWidths[j],
+                        minWidth: shrinkZero ? cozyCellWidths[j] : 'auto'
+                      }}
+                    >
+                      <Skeleton className='h-6 w-full' />
+                    </TableHead>
+                  ))}
+                </TableRow>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {Array.from({ length: rowCount }).map((_, i) => (
+                <TableRow key={i} className='hover:bg-transparent'>
+                  {Array.from({ length: effectiveColumnCount }).map((_, j) => (
+                    <TableCell
+                      key={j}
+                      style={{
+                        width: cozyCellWidths[j],
+                        minWidth: shrinkZero ? cozyCellWidths[j] : 'auto'
+                      }}
+                    >
+                      <Skeleton className='h-6 w-full' />
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      )}
+      {withPagination ? (
+        hasColumns && headerGroups ? (
+          <div className='flex flex-col gap-2.5'>
+            <DataTablePagination table={table} totalItems={0} />
+          </div>
+        ) : (
+          <div className='flex w-full items-center justify-between gap-4 overflow-auto p-1 sm:gap-8'>
+            <Skeleton className='h-7 w-40 shrink-0' />
+            <div className='flex items-center gap-4 sm:gap-6 lg:gap-8'>
+              <div className='flex items-center gap-2'>
+                <Skeleton className='h-7 w-24' />
+                <Skeleton className='h-7 w-[4.5rem]' />
+              </div>
+              <div className='flex items-center justify-center text-sm font-medium'>
+                <Skeleton className='h-7 w-20' />
+              </div>
+              <div className='flex items-center gap-2'>
+                <Skeleton className='hidden size-7 lg:block' />
+                <Skeleton className='size-7' />
+                <Skeleton className='size-7' />
+                <Skeleton className='hidden size-7 lg:block' />
+              </div>
+            </div>
+          </div>
+        )
       ) : null}
     </div>
   );

@@ -17,7 +17,5 @@ export default async function CustomerViewPage({
     notFound();
   }
 
-  return (
-    <CustomerViewForm initialData={fetchedCustomer} pageTitle='Ver Cliente' />
-  );
+  return <CustomerViewForm initialData={fetchedCustomer} />;
 }

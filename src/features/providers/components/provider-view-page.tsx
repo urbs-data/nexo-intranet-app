@@ -17,7 +17,5 @@ export default async function ProviderViewPage({
     notFound();
   }
 
-  return (
-    <ProviderViewForm initialData={fetchedProvider} pageTitle='Ver Proveedor' />
-  );
+  return <ProviderViewForm initialData={fetchedProvider} />;
 }

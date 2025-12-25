@@ -36,20 +36,22 @@ export function DataTablePagination<TData>({
       <div className='text-muted-foreground flex-1 text-sm whitespace-nowrap'>
         {table.getFilteredSelectedRowModel().rows.length > 0 ? (
           <>
-            {table.getFilteredSelectedRowModel().rows.length} of{' '}
-            {totalItems ?? table.getFilteredRowModel().rows.length} row(s)
-            selected.
+            {table.getFilteredSelectedRowModel().rows.length} de{' '}
+            {totalItems ?? table.getFilteredRowModel().rows.length} registro(s)
+            seleccionado(s).
           </>
         ) : (
           <>
-            {totalItems ?? table.getFilteredRowModel().rows.length} row(s)
-            total.
+            {totalItems ?? table.getFilteredRowModel().rows.length} registro(s)
+            total(es).
           </>
         )}
       </div>
       <div className='flex flex-col-reverse items-center gap-4 sm:flex-row sm:gap-6 lg:gap-8'>
         <div className='flex items-center space-x-2'>
-          <p className='text-sm font-medium whitespace-nowrap'>Rows per page</p>
+          <p className='text-sm font-medium whitespace-nowrap'>
+            Registros por página
+          </p>
           <Select
             value={`${table.getState().pagination.pageSize}`}
             onValueChange={(value) => {
@@ -69,7 +71,7 @@ export function DataTablePagination<TData>({
           </Select>
         </div>
         <div className='flex items-center justify-center text-sm font-medium'>
-          Page {table.getState().pagination.pageIndex + 1} of{' '}
+          Página {table.getState().pagination.pageIndex + 1} de{' '}
           {table.getPageCount()}
         </div>
         <div className='flex items-center space-x-2'>

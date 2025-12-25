@@ -4,8 +4,8 @@ import { DataTableColumnHeader } from '@/components/ui/table/data-table-column-h
 import { CustomerWithCountry } from '../../data/get-customers';
 import { Column, ColumnDef } from '@tanstack/react-table';
 import { CheckCircle2, XCircle } from 'lucide-react';
-import { CellAction } from './cell-action';
 import { formatDate } from '@/lib/format-date';
+import Link from 'next/link';
 
 export const columns: ColumnDef<CustomerWithCountry>[] = [
   {
@@ -16,7 +16,14 @@ export const columns: ColumnDef<CustomerWithCountry>[] = [
     ),
     cell: ({ cell }) => {
       const value = cell.getValue<CustomerWithCountry['id']>();
-      return <div className='font-mono text-xs'>{value.slice(0, 8)}...</div>;
+      return (
+        <Link
+          href={`/dashboard/customers/${value}`}
+          className='text-primary font-medium hover:underline'
+        >
+          {value.slice(0, 8)}...
+        </Link>
+      );
     }
   },
   {
@@ -96,10 +103,5 @@ export const columns: ColumnDef<CustomerWithCountry>[] = [
         </Badge>
       );
     }
-  },
-  {
-    id: 'actions',
-    cell: ({ row }) => <CellAction data={row.original} />,
-    maxSize: 42
   }
 ];

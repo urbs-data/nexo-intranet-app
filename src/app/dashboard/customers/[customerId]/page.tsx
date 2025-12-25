@@ -1,4 +1,3 @@
-import PageContainer from '@/components/layout/page-container';
 import { Suspense } from 'react';
 import CustomerViewPage from '@/features/customers/components/customer-view-page';
 import CustomerViewSkeleton from '@/features/customers/components/customer-view-skeleton';
@@ -12,12 +11,8 @@ type PageProps = { params: Promise<{ customerId: string }> };
 export default async function Page(props: PageProps) {
   const params = await props.params;
   return (
-    <PageContainer scrollable>
-      <div className='flex-1 space-y-4'>
-        <Suspense fallback={<CustomerViewSkeleton />}>
-          <CustomerViewPage customerId={params.customerId} />
-        </Suspense>
-      </div>
-    </PageContainer>
+    <Suspense fallback={<CustomerViewSkeleton />}>
+      <CustomerViewPage customerId={params.customerId} />
+    </Suspense>
   );
 }

@@ -3,6 +3,7 @@
 import { FormRichText } from '@/components/forms/form-rich-text';
 import { FormRichTextReadonly } from '@/components/forms/form-rich-text-readonly';
 import { Control } from 'react-hook-form';
+import { Heading } from '@/components/ui/heading';
 
 interface ProviderSupportSectionProps {
   control: Control<any>;
@@ -19,9 +20,10 @@ export function ProviderSupportSection({
 
   return (
     <div className='space-y-4'>
-      <h3 className='text-lg font-semibold'>
-        Información de contacto para soporte a Clientes
-      </h3>
+      <Heading
+        title='Información de contacto para soporte a Clientes'
+        size='md'
+      />
       {isDisabled ? (
         <FormRichTextReadonly
           value={value || ''}

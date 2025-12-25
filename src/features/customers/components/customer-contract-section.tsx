@@ -6,6 +6,7 @@ import { FormTextarea } from '@/components/forms/form-textarea';
 import { Control } from 'react-hook-form';
 import { PAYMENT_RULES, CURRENCIES } from '@/features/shared/data/constants';
 import { FormCombobox } from '@/components/forms/form-combobox';
+import { Heading } from '@/components/ui/heading';
 
 interface CustomerContractSectionProps {
   control: Control<any>;
@@ -19,8 +20,8 @@ export function CustomerContractSection({
   const isDisabled = mode === 'view';
 
   return (
-    <div className='space-y-4'>
-      <h3 className='text-lg font-semibold'>Contrato</h3>
+    <>
+      <Heading title='Contrato' size='md' />
       <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
         <FormInput
           control={control}
@@ -89,6 +90,6 @@ export function CustomerContractSection({
           rows: 4
         }}
       />
-    </div>
+    </>
   );
 }

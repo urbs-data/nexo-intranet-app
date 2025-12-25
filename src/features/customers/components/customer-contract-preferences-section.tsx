@@ -3,6 +3,7 @@
 import { FormInput } from '@/components/forms/form-input';
 import { FormCheckbox } from '@/components/forms/form-checkbox';
 import { Control } from 'react-hook-form';
+import { Heading } from '@/components/ui/heading';
 
 interface CustomerContractPreferencesSectionProps {
   control: Control<any>;
@@ -16,8 +17,8 @@ export function CustomerContractPreferencesSection({
   const isDisabled = mode === 'view';
 
   return (
-    <div className='space-y-4'>
-      <h3 className='text-lg font-semibold'>Preferencias del Contrato</h3>
+    <>
+      <Heading title='Preferencias del Contrato' size='md' />
       <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
         <FormInput
           control={control}
@@ -66,6 +67,6 @@ export function CustomerContractPreferencesSection({
           disabled={isDisabled}
         />
       </div>
-    </div>
+    </>
   );
 }

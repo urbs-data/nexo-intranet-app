@@ -11,6 +11,7 @@ import { FormCombobox } from '@/components/forms/form-combobox';
 import { useQuery } from '@tanstack/react-query';
 import { getCountries } from '@/features/shared/data/get-countries';
 import { resolveActionResult } from '@/lib/actions/client';
+import { Heading } from '@/components/ui/heading';
 
 interface CustomerGeneralInfoSectionProps {
   control: Control<any>;
@@ -39,9 +40,9 @@ export function CustomerGeneralInfoSection({
   });
 
   return (
-    <div className='space-y-6'>
+    <>
       <div className='flex items-center justify-between'>
-        <h3 className='text-lg font-semibold'>Información General</h3>
+        <Heading title='Información General' size='md' />
         {!isEditMode && mode === 'view' && onEditClick && (
           <Button
             variant='outline'
@@ -133,6 +134,6 @@ export function CustomerGeneralInfoSection({
           disabled={true}
         />
       </div>
-    </div>
+    </>
   );
 }

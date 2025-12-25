@@ -16,20 +16,16 @@ import { UpdateProviderSchema } from '../actions/update-provider-schema';
 import { toast } from 'sonner';
 import { useZodForm } from '@/hooks/use-zod-form';
 import { useState } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
-import { Heading } from '@/components/ui/heading';
 import { ProviderGeneralInfoSection } from './provider-general-info-section';
 import { ProviderContractSection } from './provider-contract-section';
 import { ProviderSupportSection } from './provider-support-section';
 import { PaymentRule } from '@/db/enums';
 
 export default function ProviderViewForm({
-  initialData,
-  pageTitle
+  initialData
 }: {
   initialData: ProviderWithCountry;
-  pageTitle: string;
 }) {
   const [isEditMode, setIsEditMode] = useState(false);
 
@@ -84,90 +80,70 @@ export default function ProviderViewForm({
     }
   };
 
+  if (isEditMode) {
+    return (
+      <Form
+        form={form}
+        onSubmit={form.handleSubmit(onSubmit)}
+        className='space-y-8'
+      >
+        <ProviderGeneralInfoSection
+          control={form.control}
+          isEditMode={isEditMode}
+          mode='edit'
+        />
+        <Separator />
+        <ProviderContractSection control={form.control} mode='edit' />
+        <Separator />
+        <ProviderSupportSection
+          control={form.control}
+          mode='edit'
+          value={null}
+        />
+
+        <div className='flex gap-4'>
+          <Button type='submit' disabled={isPending}>
+            {isPending ? 'Actualizando Proveedor...' : 'Actualizar Proveedor'}
+          </Button>
+          <Button
+            type='button'
+            variant='outline'
+            onClick={() => {
+              setIsEditMode(false);
+              form.reset();
+            }}
+            disabled={isPending}
+          >
+            Cancelar
+          </Button>
+        </div>
+      </Form>
+    );
+  }
+
   return (
-    <div className='flex flex-1 flex-col space-y-4'>
-      <Heading title={pageTitle} />
+    <Form
+      form={form}
+      onSubmit={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      }}
+      className='space-y-4'
+    >
+      <ProviderGeneralInfoSection
+        control={form.control}
+        isEditMode={isEditMode}
+        onEditClick={() => setIsEditMode(true)}
+        mode='view'
+      />
       <Separator />
-
-      <Tabs defaultValue='info' className='w-full'>
-        <TabsList>
-          <TabsTrigger value='info'>Información</TabsTrigger>
-          <TabsTrigger value='contracts'>Contratos</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value='info' className='mt-6'>
-          {isEditMode ? (
-            <Form
-              form={form}
-              onSubmit={form.handleSubmit(onSubmit)}
-              className='space-y-8'
-            >
-              <ProviderGeneralInfoSection
-                control={form.control}
-                isEditMode={isEditMode}
-                mode='edit'
-              />
-              <Separator />
-              <ProviderContractSection control={form.control} mode='edit' />
-              <Separator />
-              <ProviderSupportSection
-                control={form.control}
-                mode='edit'
-                value={null}
-              />
-
-              <div className='flex gap-4'>
-                <Button type='submit' disabled={isPending}>
-                  {isPending
-                    ? 'Actualizando Proveedor...'
-                    : 'Actualizar Proveedor'}
-                </Button>
-                <Button
-                  type='button'
-                  variant='outline'
-                  onClick={() => {
-                    setIsEditMode(false);
-                    form.reset();
-                  }}
-                  disabled={isPending}
-                >
-                  Cancelar
-                </Button>
-              </div>
-            </Form>
-          ) : (
-            <Form
-              form={form}
-              onSubmit={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-              }}
-              className='space-y-8'
-            >
-              <ProviderGeneralInfoSection
-                control={form.control}
-                isEditMode={isEditMode}
-                onEditClick={() => setIsEditMode(true)}
-                mode='view'
-              />
-              <Separator />
-              <ProviderContractSection control={form.control} mode='view' />
-              <Separator />
-              <ProviderSupportSection
-                control={form.control}
-                mode='view'
-                value={initialData.support_contact_info}
-              />
-            </Form>
-          )}
-        </TabsContent>
-
-        <TabsContent value='contracts' className='mt-6'>
-          <div className='text-muted-foreground py-8 text-center'>
-            <p>El listado de contratos se implementará próximamente.</p>
-          </div>
-        </TabsContent>
-      </Tabs>
-    </div>
+      <ProviderContractSection control={form.control} mode='view' />
+      <Separator />
+      <ProviderSupportSection
+        control={form.control}
+        mode='view'
+        value={initialData.support_contact_info}
+      />
+    </Form>
   );
 }
