@@ -8,7 +8,7 @@ import { differenceInDays } from 'date-fns';
 import { AccountHeader } from './account-header';
 import { OperationTransaction } from './operation-transaction';
 import { AccountDetailSection } from './account-detail-section';
-import { BookingDetailSection } from './booking-detail-section';
+import { BookingDetailSection } from '@/features/shared/components/booking-detail-section';
 import { formatCurrency } from '@/lib/format-currency';
 
 const calculateDaysRemaining = (
@@ -148,18 +148,7 @@ export default function FileViewForm({
             </div>
 
             <div className='lg:col-span-1'>
-              <BookingDetailSection
-                externalId={initialData.external_id}
-                status={initialData.status}
-                creationDate={initialData.creation_date}
-                checkIn={initialData.check_in}
-                autocancelDate={initialData.autocancel_date}
-                cancelLimitDate={initialData.cancel_limit_date}
-                paymentInformedDate={initialData.payment_informed_date}
-                canceledDate={initialData.canceled_date}
-                rebookingId={initialData.rebooking_id}
-                updatedAt={initialData.updated_at}
-              />
+              <BookingDetailSection booking={initialData} />
             </div>
           </div>
         </TabsContent>

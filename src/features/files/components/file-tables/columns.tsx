@@ -18,11 +18,8 @@ export const columns: ColumnDef<FileListDTO>[] = [
       <DataTableColumnHeader column={column} title='File' />
     ),
     cell: ({ row }) => {
-      const filePublicId = row.original.file_public_id;
+      const filePublicId = row.original.file_public_id!;
       const fileId = row.original.id;
-      if (!filePublicId) {
-        return <div>-</div>;
-      }
       return (
         <Link
           href={`/dashboard/files/${fileId}`}

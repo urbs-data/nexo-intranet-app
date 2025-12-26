@@ -15,11 +15,18 @@ export const columns: ColumnDef<BookingListDTO>[] = [
     header: ({ column }: { column: Column<BookingListDTO, unknown> }) => (
       <DataTableColumnHeader column={column} title='ID' />
     ),
-    cell: ({ cell }) => (
-      <div className='font-medium'>
-        {cell.getValue<BookingListDTO['external_id']>()}
-      </div>
-    ),
+    cell: ({ row }) => {
+      const bookingExternalId = row.original.external_id;
+      const bookingId = row.original.id;
+      return (
+        <Link
+          href={`/dashboard/bookings/${bookingId}`}
+          className='text-primary font-medium hover:underline'
+        >
+          {bookingExternalId}
+        </Link>
+      );
+    },
     size: 100
   },
   {
@@ -189,7 +196,7 @@ export const columns: ColumnDef<BookingListDTO>[] = [
           <div>{formatCurrency(grossPrice, marketerCurrency)}</div>
           {hasUsdPrice && grossPriceUsd !== grossPrice && (
             <div className='text-muted-foreground text-xs'>
-              {formatCurrency(grossPriceUsd, 'USD')}
+              {formatCurrency(grossPriceUsd, 'USD', 0)}
             </div>
           )}
         </div>

@@ -1,6 +1,4 @@
 import { ProviderContractsTable } from './provider-contracts-table';
-import { Suspense } from 'react';
-import ProviderContractsSkeleton from './provider-contracts-skeleton';
 
 type ProviderContractsPageProps = {
   providerId: string;
@@ -9,9 +7,5 @@ type ProviderContractsPageProps = {
 export default function ProviderContractsPage({
   providerId
 }: ProviderContractsPageProps) {
-  return (
-    <Suspense fallback={<ProviderContractsSkeleton />}>
-      <ProviderContractsTable providerId={providerId} />
-    </Suspense>
-  );
+  return <ProviderContractsTable providerId={providerId} />;
 }

@@ -18,7 +18,8 @@ import {
   BookingStatus,
   FileCustomerStatus,
   FileProviderStatus,
-  PaymentRule
+  PaymentRule,
+  BookingHistoryAction
 } from './enums';
 
 export const productsTable = pgTable(
@@ -51,6 +52,17 @@ export const countryTable = pgTable('country', {
 
 export type Country = typeof countryTable.$inferSelect;
 export type NewCountry = typeof countryTable.$inferInsert;
+
+// Destination table
+export const destinationTable = pgTable('destination', {
+  id: integer('id').primaryKey(),
+  name_en: varchar('name_en', { length: 255 }).notNull(),
+  name_es: varchar('name_es', { length: 255 }).notNull(),
+  country_id: integer('country_id').references(() => countryTable.id)
+});
+
+export type Destination = typeof destinationTable.$inferSelect;
+export type NewDestination = typeof destinationTable.$inferInsert;
 
 // PaymentRule table
 export const paymentRuleEnum = pgEnum('payment_rule', [
@@ -282,3 +294,37 @@ export const bookingTable = pgTable(
 
 export type Booking = typeof bookingTable.$inferSelect;
 export type NewBooking = typeof bookingTable.$inferInsert;
+
+// BookingHistoryAction enum
+export const bookingHistoryActionEnum = pgEnum('booking_history_action', [
+  BookingHistoryAction.CREATED,
+  BookingHistoryAction.UPDATED,
+  BookingHistoryAction.FILE_INITIALIZED,
+  BookingHistoryAction.FILE_STATUS_SYNCED,
+  BookingHistoryAction.CUSTOMER_STATUS_CHANGE,
+  BookingHistoryAction.PROVIDER_STATUS_CHANGE,
+  BookingHistoryAction.FILE_CUSTOMER_REBILLING,
+  BookingHistoryAction.FILE_CUSTOMER_TO_ACCOUNT,
+  BookingHistoryAction.FILE_CUSTOMER_INVOICED,
+  BookingHistoryAction.FILE_PROVIDER_REQUEST_REFUND,
+  BookingHistoryAction.AUTO_PAYMENT_PROCESSED
+]);
+
+// BookingHistory table
+export const bookingHistoryTable = pgTable(
+  'bookinghistory',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    booking_id: uuid('booking_id')
+      .references(() => bookingTable.id)
+      .notNull(),
+    user_id: integer('user_id'),
+    action: bookingHistoryActionEnum('action').notNull(),
+    data: text('data'),
+    created_at: timestamp('created_at').notNull().defaultNow()
+  },
+  (table) => [index('booking_id_idx').on(table.booking_id)]
+);
+
+export type BookingHistory = typeof bookingHistoryTable.$inferSelect;
+export type NewBookingHistory = typeof bookingHistoryTable.$inferInsert;
