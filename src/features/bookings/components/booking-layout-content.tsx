@@ -22,13 +22,7 @@ export async function BookingLayoutContent({
 
   return (
     <>
-      <BookingHeaderSection
-        productName={booking.product_name}
-        status={booking.status}
-        creationDate={booking.creation_date}
-        checkIn={booking.check_in}
-        checkOut={booking.check_out}
-      />
+      <BookingHeaderSection booking={booking} />
 
       <BookingViewTabs bookingId={bookingId} />
 

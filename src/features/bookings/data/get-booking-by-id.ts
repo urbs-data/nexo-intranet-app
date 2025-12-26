@@ -116,6 +116,11 @@ export const getBookingById = authActionClient
         destination_id: bookingTable.destination_id,
         product_type: bookingTable.product_type,
         product_name: bookingTable.product_name,
+        product_board: bookingTable.product_board,
+        nights_count: bookingTable.nights_count,
+        rooms_count: bookingTable.rooms_count,
+        adult_count: bookingTable.adult_count,
+        child_count: bookingTable.child_count,
         holder_name: bookingTable.holder_name,
         file_public_id: sql<
           number | null

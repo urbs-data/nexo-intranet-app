@@ -55,6 +55,11 @@ export type BookingListDTO = {
   destination_id: number | null;
   product_type: string | null;
   product_name: string | null;
+  product_board: string | null;
+  nights_count: number | null;
+  rooms_count: number | null;
+  adult_count: number | null;
+  child_count: number | null;
   holder_name: string | null;
   file_public_id: number | null;
   file_status_customer: FileCustomerStatus | null;
@@ -170,6 +175,11 @@ export const getBookings = authActionClient
         destination_id: bookingTable.destination_id,
         product_type: bookingTable.product_type,
         product_name: bookingTable.product_name,
+        product_board: bookingTable.product_board,
+        nights_count: bookingTable.nights_count,
+        rooms_count: bookingTable.rooms_count,
+        adult_count: bookingTable.adult_count,
+        child_count: bookingTable.child_count,
         holder_name: bookingTable.holder_name,
         file_public_id: bookingTable.file_public_id,
         file_status_customer: bookingTable.file_status_customer,

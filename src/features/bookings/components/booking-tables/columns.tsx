@@ -193,7 +193,7 @@ export const columns: ColumnDef<BookingListDTO>[] = [
 
       return (
         <div className='text-right'>
-          <div>{formatCurrency(grossPrice, marketerCurrency)}</div>
+          <div>{formatCurrency(grossPrice, marketerCurrency, 0)}</div>
           {hasUsdPrice && grossPriceUsd !== grossPrice && (
             <div className='text-muted-foreground text-xs'>
               {formatCurrency(grossPriceUsd, 'USD', 0)}
