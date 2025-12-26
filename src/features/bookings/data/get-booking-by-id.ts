@@ -49,6 +49,11 @@ export type BookingDetailDTO = {
   cto_operator_name: string | null;
   destination_id: number | null;
   product_type: string | null;
+  product_board: string | null;
+  nights_count: number | null;
+  rooms_count: number | null;
+  adult_count: number | null;
+  child_count: number | null;
   product_name: string | null;
   holder_name: string | null;
   file_public_id: number | null;
