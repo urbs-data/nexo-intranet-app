@@ -16,7 +16,7 @@ export type BookingHistoryDTO = {
 };
 
 const getBookingHistorySchema = z.object({
-  booking_id: z.string().uuid()
+  booking_id: z.uuid()
 });
 
 export const getBookingHistory = authActionClient
@@ -27,7 +27,7 @@ export const getBookingHistory = authActionClient
       .select()
       .from(bookingHistoryTable)
       .where(eq(bookingHistoryTable.booking_id, parsedInput.booking_id))
-      .orderBy(desc(bookingHistoryTable.created_at));
+      .orderBy(desc(bookingHistoryTable.id));
 
     return history as BookingHistoryDTO[];
   });
